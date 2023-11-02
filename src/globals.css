@@ -1,0 +1,34 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.auth-form-link {
+  color: #cdb4db;
+}
+
+.dark-mode-link {
+  color: #fff;
+}
+
+.light-mode-link {
+  color: #000000de;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
