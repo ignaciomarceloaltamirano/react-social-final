@@ -14,6 +14,7 @@ import RootLayout from './components/RootLayout';
 import PostPage from './components/pages/Post';
 import TagPostsPage from './components/pages/TagPosts';
 import ProfilePage from './components/pages/Profile';
+import SearchPage from './components/pages/Search';
 
 const queryClient = new QueryClient();
 
@@ -26,12 +27,12 @@ function App() {
         <Toaster />
         <CssBaseline />
         <Routes>
-          <Route element={<AuthLayout handleChange={handleChange} />}>
+          <Route element={<RootLayout handleChange={handleChange} />}>
             <Route path='/register' element={<RegisterUserPage />} />
             <Route path='/login' element={<LoginPage />} />
           </Route>
 
-          <Route element={<RootLayout handleChange={handleChange} />}>
+          <Route element={<AuthLayout handleChange={handleChange} />}>
             <Route index element={<HomePage />} />
             <Route
               path='/communities/:communityName'
@@ -42,6 +43,7 @@ function App() {
             <Route path='/users/:username' element={<ProfilePage />} />
             <Route path='/register-admin' element={<RegisterAdminPage />} />
             <Route path='/register-mod' element={<RegisterModPage />} />
+            <Route path='/search' element={<SearchPage />} />
           </Route>
         </Routes>
       </ThemeProvider>

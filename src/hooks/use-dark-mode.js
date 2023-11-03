@@ -72,7 +72,6 @@ export const useDarkMode = () => {
       MuiTab: {
         styleOverrides: {
           root: {
-            backgroundColor: mode ? '#424242' : '',
             textTransform: 'capitalize',
             color: mode ? '#fff' : '#000000DE',
           },

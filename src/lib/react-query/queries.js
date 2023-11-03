@@ -27,6 +27,7 @@ import {
 } from '../../services/subscription.service';
 import {
   createPost,
+  deletePost,
   getCommunityPosts,
   getPost,
   getPostsByTag,
@@ -57,6 +58,7 @@ import {
   voteComment,
 } from '../../services/comment-vote.service';
 import { getUser, getUsers } from '../../services/user.service';
+import { searchPosts } from '../../services/search.service';
 
 /* ***** USERS ***** */
 export const useLogIn = () => {
@@ -418,6 +420,25 @@ export const useUnSavePost = () => {
   });
 };
 
+export const useDeletePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (postId) => deletePost(postId),
+    onSuccess: (res) => {
+      toast.success(res.message);
+      queryClient.invalidateQueries(['posts']);
+    },
+    onError: (error) => {
+      if (error.status === 400) {
+        toast.error(error.message);
+      } else {
+        toast.error(error.response.data.message);
+      }
+    },
+  });
+};
+
 /* ***** TAGS ***** */
 export const useGetTags = () => {
   return useQuery({
@@ -573,5 +594,18 @@ export const useVoteComment = (type) => {
         toast.error(error.response.data.message);
       }
     },
+  });
+};
+
+/* ***** SEARCH ***** */
+export const useSearchPosts = (query) => {
+  return useInfiniteQuery({
+    queryKey: ['search-posts', query],
+    queryFn: ({ pageParam = 1 }) => searchPosts(query, pageParam),
+    getNextPageParam: (lastPage) => {
+      const { totalPages, currentPage } = lastPage;
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+    enabled: !!query,
   });
 };

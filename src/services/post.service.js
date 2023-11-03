@@ -65,3 +65,8 @@ export const unSavePost = async (postId) => {
   const { data } = await api.delete(`/posts/unsave/${postId}`);
   return data;
 };
+
+export const deletePost = async (postId) => {
+  const { data } = await api.delete(`/posts/${postId}`);
+  return data;
+};

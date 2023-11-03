@@ -88,9 +88,11 @@ const PostWithComment = ({ post }) => {
               <Stack direction='row' spacing={2}>
                 {post?.tags.length > 0 &&
                   post.tags.map((tag, i) => (
-                    <Typography key={i} variant='caption' sx={{ mr: 1 }}>
-                      #{tag}
-                    </Typography>
+                    <Link key={i} to={`/tags/${tag}`}>
+                      <Typography variant='caption' sx={{ mr: 1 }}>
+                        #{tag}
+                      </Typography>
+                    </Link>
                   ))}
               </Stack>
               <Divider sx={{ mb: 2 }} />

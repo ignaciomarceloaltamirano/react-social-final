@@ -3,8 +3,6 @@ import { Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
 import { formatDateDistance } from '../lib/utils';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { Grid } from '@mui/material';
 import {
   useGetPostVotes,
@@ -13,17 +11,24 @@ import {
   useSavePost,
   useUnSavePost,
   useIsPostSaved,
+  useDeletePost,
 } from '../lib/react-query/queries';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { getCurrentUser } from '../services/auth.service';
 
 const Post = ({ post }) => {
   const theme = useTheme();
+  const user = getCurrentUser();
   const { data: currentVote } = useGetCurrentVote(post?.id);
   const { data: postVotes } = useGetPostVotes(post?.id);
   const { mutateAsync: votePost } = useVotePost();
   const { mutateAsync: savePost } = useSavePost();
   const { mutateAsync: unSavePost } = useUnSavePost();
+  const { mutateAsync: deletePost } = useDeletePost();
   const { data: isPostSaved } = useIsPostSaved(post?.id);
   const navigate = useNavigate();
 
@@ -44,6 +49,11 @@ const Post = ({ post }) => {
     (a, c) => (c.type === 'UPVOTE' ? a + 1 : a - 1),
     0
   );
+
+  const handleDeletePost = async (e) => {
+    e.stopPropagation();
+    deletePost(post?.id);
+  };
 
   return (
     <Stack sx={{ mb: 2, cursor: 'pointer' }} onClick={handleNavigate}>
@@ -87,10 +97,27 @@ const Post = ({ post }) => {
           </Grid>
           <Grid item xs={11}>
             <Stack spacing={1}>
-              <Typography variant='h5'> {post?.title}</Typography>
+              <Stack
+                direction='row'
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Typography variant='h5'> {post?.title}</Typography>
+                {user?.id === post?.authorId && (
+                  <IconButton
+                    onClick={handleDeletePost}
+                    sx={{ borderRadius: '5px' }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                )}
+              </Stack>
               <Typography variant='body2'>{post?.content}</Typography>
               {post?.imageUrl && <img src={post.imageUrl} />}
-              <Stack direction='row' spacing={2}>
+              <Stack direction='row' spacing={1}>
                 {post?.tags.length > 0 &&
                   post.tags.map((tag, i) => (
                     <Link

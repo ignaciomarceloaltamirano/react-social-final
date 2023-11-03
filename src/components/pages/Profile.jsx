@@ -17,15 +17,17 @@ import {
 } from '../../lib/react-query/queries';
 import { Link, useParams } from 'react-router-dom';
 import { AccountCircle } from '@mui/icons-material';
-import InfiniteScrollPosts from '../InfiniteScrollPosts';
-import Loader from '../Loader';
 import { useTheme } from '@emotion/react';
 import { useState } from 'react';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
 import { getCurrentUser } from '../../services/auth.service';
+import ImageIcon from '@mui/icons-material/Image';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import CustomTabPanel from '../CustomTabPanel';
 
 const ProfilePage = () => {
   const params = useParams();
@@ -71,6 +73,7 @@ const ProfilePage = () => {
   const handleChange = (e, newValue) => {
     setValue(newValue);
   };
+
   return (
     <Container maxWidth='md'>
       <Grid container columnSpacing={2}>
@@ -96,68 +99,64 @@ const ProfilePage = () => {
           <Stack sx={{ mt: 1 }}>
             <TabContext value={value}>
               <Stack>
-                <TabList onChange={handleChange}>
-                  <Tab label='Posts' value='1' />
-                  <Tab label='Upvoted Posts' value='2' />
-                  <Tab label='Downvoted Posts' value='3' />
+                <TabList variant='scrollable' onChange={handleChange}>
+                  <Tab
+                    icon={<ImageIcon />}
+                    iconPosition='start'
+                    label='Posts'
+                    value='1'
+                  />
+                  <Tab
+                    icon={<ArrowUpwardIcon />}
+                    iconPosition='start'
+                    label='Upvoted Posts'
+                    value='2'
+                  />
+                  <Tab
+                    icon={<ArrowDownwardIcon />}
+                    iconPosition='start'
+                    label='Downvoted Posts'
+                    value='3'
+                  />
                   {currentUser?.id === user?.id && (
-                    <Tab label='Saved Posts' value='4' />
+                    <Tab
+                      icon={<InsertDriveFileIcon />}
+                      iconPosition='start'
+                      label='Saved Posts'
+                      value={'4' || false}
+                    />
                   )}
                 </TabList>
               </Stack>
-              <TabPanel value='1'>
-                <Stack>
-                  {isLoading ? (
-                    <Loader />
-                  ) : (
-                    <InfiniteScrollPosts
-                      data={userPosts}
-                      fetchNextPage={fetchNextPage}
-                      hasNextPage={hasNextPage}
-                    />
-                  )}
-                </Stack>
-              </TabPanel>
-              <TabPanel value='2'>
-                <Stack>
-                  {upVotedPostsIsLoading ? (
-                    <Loader />
-                  ) : (
-                    <InfiniteScrollPosts
-                      data={userUpVotedPosts}
-                      fetchNextPage={upVotedPostsFetchNextPage}
-                      hasNextPage={upVotedPostsHasNextPage}
-                    />
-                  )}
-                </Stack>
-              </TabPanel>
-              <TabPanel value='3'>
-                <Stack>
-                  {downVotedPostsIsLoading ? (
-                    <Loader />
-                  ) : (
-                    <InfiniteScrollPosts
-                      data={userDownVotedPosts}
-                      fetchNextPage={downVotedPostsFetchNextPage}
-                      hasNextPage={downVotedPostsHasNextPage}
-                    />
-                  )}
-                </Stack>
-              </TabPanel>
+              <CustomTabPanel
+                data={userPosts}
+                value={'1'}
+                fetchNextPage={fetchNextPage}
+                hasNextPage={hasNextPage}
+                isLoading={isLoading}
+              />
+              <CustomTabPanel
+                data={userUpVotedPosts}
+                value={'2'}
+                fetchNextPage={upVotedPostsFetchNextPage}
+                hasNextPage={upVotedPostsHasNextPage}
+                isLoading={upVotedPostsIsLoading}
+              />
+              <CustomTabPanel
+                data={userDownVotedPosts}
+                value={'3'}
+                fetchNextPage={downVotedPostsFetchNextPage}
+                hasNextPage={downVotedPostsHasNextPage}
+                isLoading={downVotedPostsIsLoading}
+              />
               {currentUser?.id === user?.id && (
-                <TabPanel value={'4'}>
-                  <Stack>
-                    {savedPostsIsLoading ? (
-                      <Loader />
-                    ) : (
-                      <InfiniteScrollPosts
-                        data={userSavedPosts}
-                        fetchNextPage={savedPostsFetchNextPage}
-                        hasNextPage={savedPostsHasNextPage}
-                      />
-                    )}
-                  </Stack>
-                </TabPanel>
+                <CustomTabPanel
+                  data={userSavedPosts}
+                  value={'4'}
+                  fetchNextPage={savedPostsFetchNextPage}
+                  hasNextPage={savedPostsHasNextPage}
+                  isLoading={savedPostsIsLoading}
+                />
               )}
             </TabContext>
           </Stack>
@@ -167,7 +166,7 @@ const ProfilePage = () => {
             direction='column'
             spacing={1}
             sx={{
-              mt: 2,
+              mb: 2,
               p: 2,
               border:
                 theme.palette.mode === 'dark'

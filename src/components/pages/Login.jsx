@@ -3,6 +3,7 @@ import { Button, FormLabel, Stack, TextField, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { useLogIn } from '../../lib/react-query/queries';
+import { useEffect } from 'react';
 
 const LoginPage = () => {
   const { register, handleSubmit, reset } = useForm();
@@ -16,9 +17,11 @@ const LoginPage = () => {
     reset();
   };
 
-  if (isSuccess) {
-    navigate('/');
-  }
+  useEffect(() => {
+    if (isSuccess) {
+      navigate('/');
+    }
+  }, [isSuccess, navigate]);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2} width={400} sx={{ m: 'auto' }}>

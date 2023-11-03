@@ -2,6 +2,7 @@
 import { Button, FormLabel, Stack, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { useCreateComment, useUpdateComment } from '../lib/react-query/queries';
+import { useEffect } from 'react';
 
 const PostCommentForm = ({
   postId,
@@ -11,9 +12,17 @@ const PostCommentForm = ({
   updating,
   comment,
 }) => {
-  const { control, handleSubmit, reset } = useForm();
+  const { control, handleSubmit, reset, setValue } = useForm();
   const { mutate: createComment } = useCreateComment();
   const { mutateAsync: updateComment } = useUpdateComment();
+
+  useEffect(() => {
+    if (updating && comment) {
+      setValue('text', comment.text);
+    } else {
+      setValue('text', '');
+    }
+  }, [updating, comment, setValue]);
 
   const onSubmit = (data) => {
     if (updating) {

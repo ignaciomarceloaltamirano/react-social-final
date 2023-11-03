@@ -1,45 +1,44 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { Container, Grid, Typography, Stack, Divider } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   useGetCommunities,
-  useGetPostsByTag,
   useGetTags,
+  useSearchPosts,
 } from '../../lib/react-query/queries';
-import InfiniteScrollPosts from '../InfiniteScrollPosts';
+import { Container, Divider, Stack, Typography, Grid } from '@mui/material';
 import Loader from '../Loader';
+import InfiniteScrollPosts from '../InfiniteScrollPosts';
 import RecommendedWidget from '../RecommendedWidget';
 import { useTheme } from '@emotion/react';
-import { useEffect } from 'react';
 
-const TagPostsPage = () => {
-  const params = useParams();
+const SearchPage = () => {
   const theme = useTheme();
-
-  const {
-    data: posts,
-    isLoading,
-    hasNextPage,
-    fetchNextPage,
-    refetch,
-  } = useGetPostsByTag(params?.tagName);
-
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location?.search);
+  const query = queryParams.get('query');
   const { data: communities } = useGetCommunities();
   const { data: tags } = useGetTags();
+  const {
+    data: posts,
+    hasNextPage,
+    fetchNextPage,
+    isLoading,
+  } = useSearchPosts(query);
 
-  useEffect(() => {
-    refetch();
-  }, [params?.tagName]);
-
+  const arePostsFound =
+    posts?.pages.map((group) => group.content).flatMap((c) => c.length) > 0;
   return (
     <Container maxWidth='lg'>
-      <Grid container columnSpacing={2}>
+      <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <Typography sx={{ mb: 2 }} variant='h4'>
-            #{params?.tagName}
+            Search {`"${query}"`}
           </Typography>
           {isLoading ? (
             <Loader />
+          ) : !arePostsFound ? (
+            <Typography sx={{ mt: 2 }} variant='h5' align='center'>
+              No posts found.
+            </Typography>
           ) : (
             <Stack>
               <InfiniteScrollPosts
@@ -55,7 +54,6 @@ const TagPostsPage = () => {
             direction='column'
             spacing={1}
             sx={{
-              mt: 2,
               p: 2,
               border:
                 theme.palette.mode === 'dark'
@@ -84,4 +82,4 @@ const TagPostsPage = () => {
   );
 };
 
-export default TagPostsPage;
+export default SearchPage;

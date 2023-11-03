@@ -24,6 +24,7 @@ import { useMutation } from '@tanstack/react-query';
 import { removeUser } from '../services/token.service';
 import CommunityModal from './CommunityModal';
 import { useTheme } from '@emotion/react';
+import SearchForm from './SearchForm';
 
 const Navbar = ({ user, handleChange }) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -78,10 +79,7 @@ const Navbar = ({ user, handleChange }) => {
   return (
     <AppBar key={theme} position='sticky' sx={{ mb: 2 }}>
       <Container maxWidth='xl'>
-        <Toolbar
-          sx={{ display: 'flex', justifyContent: 'space-between' }}
-          disableGutters
-        >
+        <Toolbar sx={{ display: 'flex', justifyContent: 'end' }} disableGutters>
           <Link to='/'>
             <Typography sx={{ mr: 2 }} variant='h5'>
               Home
@@ -152,6 +150,11 @@ const Navbar = ({ user, handleChange }) => {
                 </Menu>
               </Stack>
             </>
+          )}
+          {user && (
+            <Stack sx={{ mx: 'auto', width: 250 }}>
+              <SearchForm />
+            </Stack>
           )}
           <Stack sx={{ ml: 'auto' }}>
             {theme.palette.mode === 'dark' ? (
