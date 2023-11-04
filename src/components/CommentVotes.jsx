@@ -32,10 +32,9 @@ const CommentVotes = ({ comment }) => {
     deleteComment(comment?.id);
   };
 
-  const totalVotes = commentVotes?.reduce(
-    (a, c) => (c.type === 'UPVOTE' ? a + 1 : a - 1),
-    0
-  );
+  const totalVotes =
+    commentVotes &&
+    commentVotes?.reduce((a, c) => (c.type === 'UPVOTE' ? a + 1 : a - 1), 0);
 
   return (
     <>
