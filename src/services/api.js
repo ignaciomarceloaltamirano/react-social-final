@@ -6,7 +6,8 @@ import {
 } from './token.service';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080',
+  // baseURL: 'http://localhost:8080',
+  baseURL: 'https://spring-render-d46x.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },
