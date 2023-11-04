@@ -80,7 +80,7 @@ const Post = ({ post }) => {
               >
                 <ArrowUpwardIcon />
               </IconButton>
-              <Typography>{totalVotes}</Typography>
+              {totalVotes && <Typography>{totalVotes}</Typography>}
               <IconButton
                 onClick={(e) => {
                   e.stopPropagation();

@@ -57,7 +57,7 @@ const CommentVotes = ({ comment }) => {
         >
           <ArrowUpwardIcon />
         </IconButton>
-        <Typography>{totalVotes}</Typography>
+        {totalVotes && <Typography>{totalVotes}</Typography>}
         <IconButton
           onClick={() => {
             handleVoteComment('DOWNVOTE');
