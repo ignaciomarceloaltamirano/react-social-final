@@ -45,10 +45,9 @@ const Post = ({ post }) => {
     isPostSaved ? unSavePost(post?.id) : savePost(post?.id);
   };
 
-  const totalVotes = postVotes?.reduce(
-    (a, c) => (c.type === 'UPVOTE' ? a + 1 : a - 1),
-    0
-  );
+  const totalVotes =
+    postVotes &&
+    postVotes?.reduce((a, c) => (c.type === 'UPVOTE' ? a + 1 : a - 1), 0);
 
   const handleDeletePost = async (e) => {
     e.stopPropagation();
