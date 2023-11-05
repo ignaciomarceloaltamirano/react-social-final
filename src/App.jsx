@@ -15,11 +15,13 @@ import PostPage from './components/pages/Post';
 import TagPostsPage from './components/pages/TagPosts';
 import ProfilePage from './components/pages/Profile';
 import SearchPage from './components/pages/Search';
+import { useToasterLimit } from './hooks/use-toaster-limit';
 
 const queryClient = new QueryClient();
 
 function App() {
   const { appTheme, handleChange } = useDarkMode();
+  useToasterLimit();
 
   return (
     <QueryClientProvider client={queryClient}>

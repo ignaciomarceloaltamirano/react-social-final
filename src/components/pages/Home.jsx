@@ -48,6 +48,7 @@ const HomePage = () => {
             direction='column'
             spacing={1}
             sx={{
+              borderRadius: '5px',
               border:
                 theme.palette.mode === 'dark'
                   ? '1px solid #ffffff1f'
@@ -78,6 +79,7 @@ const HomePage = () => {
             sx={{
               mt: 2,
               p: 2,
+              borderRadius: '5px',
               border:
                 theme.palette.mode === 'dark'
                   ? '1px solid #ffffff1f'

@@ -21,8 +21,8 @@ export const useDarkMode = () => {
       ...(mode
         ? {
             background: {
-              default: '#303030',
-              paper: '#424242',
+              default: '#1d1d20',
+              paper: '#2c2c30',
             },
             text: {
               primary: '#ffffff',
@@ -81,6 +81,14 @@ export const useDarkMode = () => {
         styleOverrides: {
           root: {
             padding: '1rem 0',
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            boxShadow: 'none',
+            border: !mode && '1px solid #0000001f',
           },
         },
       },

@@ -6,6 +6,7 @@ const AboutCommunityWidget = ({ theme, community, membersCount }) => {
   return (
     <Stack
       sx={{
+        borderRadius: '5px',
         border:
           theme.palette.mode === 'dark'
             ? '1px solid #ffffff1f'

@@ -4,10 +4,10 @@ import {
   getLocalRefreshToken,
   updateLocalAccessToken,
 } from './token.service';
+import toast from 'react-hot-toast';
 
 const instance = axios.create({
   baseURL: 'http://localhost:8080',
-  // baseURL: 'https://spring-render-d46x.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -37,15 +37,17 @@ instance.interceptors.response.use(
         originalConfig._retry = true;
 
         try {
-          const rs = await instance.post('/auth/refreshtoken', {
+          const res = await instance.post('/auth/refreshtoken', {
             refreshToken: getLocalRefreshToken(),
           });
 
-          const { accessToken } = rs.data;
+          const { accessToken } = res.data;
           updateLocalAccessToken(accessToken);
 
           return instance(originalConfig);
         } catch (_error) {
+          console.log(_error);
+          toast.error(_error.response.data.message);
           return Promise.reject(_error);
         }
       }

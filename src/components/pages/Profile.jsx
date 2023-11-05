@@ -168,6 +168,7 @@ const ProfilePage = () => {
             sx={{
               mb: 2,
               p: 2,
+              borderRadius: '5px',
               border:
                 theme.palette.mode === 'dark'
                   ? '1px solid #ffffff1f'

@@ -31,7 +31,7 @@ const SearchPage = () => {
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <Typography sx={{ mb: 2 }} variant='h4'>
-            Search {`"${query}"`}
+            Search for {`"${query}"`}
           </Typography>
           {isLoading ? (
             <Loader />
