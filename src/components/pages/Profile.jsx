@@ -98,36 +98,34 @@ const ProfilePage = () => {
           </Stack>
           <Stack sx={{ mt: 1 }}>
             <TabContext value={value}>
-              <Stack>
-                <TabList variant='scrollable' onChange={handleChange}>
+              <TabList variant='scrollable' onChange={handleChange}>
+                <Tab
+                  icon={<ImageIcon />}
+                  iconPosition='start'
+                  label='Posts'
+                  value='1'
+                />
+                <Tab
+                  icon={<ArrowUpwardIcon />}
+                  iconPosition='start'
+                  label='Upvoted Posts'
+                  value='2'
+                />
+                <Tab
+                  icon={<ArrowDownwardIcon />}
+                  iconPosition='start'
+                  label='Downvoted Posts'
+                  value='3'
+                />
+                {currentUser?.id === user?.id && (
                   <Tab
-                    icon={<ImageIcon />}
+                    icon={<InsertDriveFileIcon />}
                     iconPosition='start'
-                    label='Posts'
-                    value='1'
+                    label='Saved Posts'
+                    value={'4' || false}
                   />
-                  <Tab
-                    icon={<ArrowUpwardIcon />}
-                    iconPosition='start'
-                    label='Upvoted Posts'
-                    value='2'
-                  />
-                  <Tab
-                    icon={<ArrowDownwardIcon />}
-                    iconPosition='start'
-                    label='Downvoted Posts'
-                    value='3'
-                  />
-                  {currentUser?.id === user?.id && (
-                    <Tab
-                      icon={<InsertDriveFileIcon />}
-                      iconPosition='start'
-                      label='Saved Posts'
-                      value={'4' || false}
-                    />
-                  )}
-                </TabList>
-              </Stack>
+                )}
+              </TabList>
               <CustomTabPanel
                 data={userPosts}
                 value={'1'}

@@ -28,7 +28,7 @@ const SearchPage = () => {
     posts?.pages.map((group) => group.content).flatMap((c) => c.length) > 0;
   return (
     <Container maxWidth='lg'>
-      <Grid container spacing={2}>
+      <Grid container columnSpacing={2}>
         <Grid item xs={12} md={8}>
           <Typography sx={{ mb: 2 }} variant='h4'>
             Search for {`"${query}"`}

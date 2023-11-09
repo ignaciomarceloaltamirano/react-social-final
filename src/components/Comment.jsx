@@ -3,8 +3,11 @@ import { Avatar, IconButton, Stack, Typography } from '@mui/material';
 import { formatDateDistance } from '../lib/utils';
 import { AccountCircle } from '@mui/icons-material';
 import CommentVotes from './CommentVotes';
+import { Link } from 'react-router-dom';
+import { useTheme } from '@emotion/react';
 
 const Comment = ({ comment, replies, getReplies }) => {
+  const theme = useTheme();
   return (
     <Stack
       direction='column'
@@ -27,9 +30,12 @@ const Comment = ({ comment, replies, getReplies }) => {
             <AccountCircle />
           )}
         </IconButton>
-        <Typography>
+        <Link
+          className={theme.palette.mode === 'light' ? 'light-mode-link' : ''}
+          to={`/users/${comment?.authorName}`}
+        >
           <b>{comment.authorName}</b>
-        </Typography>
+        </Link>
         <Typography variant='caption'>
           {formatDateDistance(comment.createdAt)}
         </Typography>

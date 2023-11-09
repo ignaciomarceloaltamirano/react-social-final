@@ -53,10 +53,10 @@ const TagPostsPage = () => {
         <Grid item xs={12} md={4}>
           <Stack
             direction='column'
-            spacing={1}
+            spacing={2}
             sx={{
-              mt: 2,
               p: 2,
+              bgcolor: theme.palette.mode === 'light' && '#fff',
               border:
                 theme.palette.mode === 'dark'
                   ? '1px solid #ffffff1f'

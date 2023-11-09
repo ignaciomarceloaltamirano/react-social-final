@@ -1,5 +1,4 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { useDarkMode } from './hooks/use-dark-mode';
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './components/pages/Home';
 import RegisterAdminPage from './components/pages/RegisterAdmin';
@@ -16,11 +15,12 @@ import TagPostsPage from './components/pages/TagPosts';
 import ProfilePage from './components/pages/Profile';
 import SearchPage from './components/pages/Search';
 import { useToasterLimit } from './hooks/use-toaster-limit';
+import { useAppTheme } from './hooks/use-app-theme';
 
 const queryClient = new QueryClient();
 
 function App() {
-  const { appTheme, handleChange } = useDarkMode();
+  const { appTheme, handleChange } = useAppTheme();
   useToasterLimit();
 
   return (

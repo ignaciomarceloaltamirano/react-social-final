@@ -65,12 +65,14 @@ const CreatePostModal = () => {
         sx={{
           display: 'flex',
           alignItems: 'center',
+          bgcolor: theme.palette.mode === 'light' && '#fff',
           border:
             theme.palette.mode === 'dark'
               ? '1px solid #ffffff1f'
               : '1px solid #0000001f',
           width: '100%',
           cursor: 'pointer',
+          borderRadius: '6px',
         }}
         onClick={handleOpen}
       >
@@ -89,10 +91,11 @@ const CreatePostModal = () => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: 400,
+              width: 350,
               bgcolor: 'background.paper',
               boxShadow: 24,
               p: 4,
+              overflow: 'auto',
             }}
           >
             <IconButton sx={{ ml: 'auto' }} onClick={handleClose}>
@@ -102,7 +105,7 @@ const CreatePostModal = () => {
               Create a post
             </Typography>
             <Divider />
-            <FormLabel sx={{ my: 2 }}>Title</FormLabel>
+            <FormLabel sx={{ my: 1 }}>Title</FormLabel>
             <TextField
               {...register('title')}
               size='small'
@@ -113,7 +116,7 @@ const CreatePostModal = () => {
                 }
               }}
             />
-            <FormLabel sx={{ my: 2 }}>Content</FormLabel>
+            <FormLabel sx={{ my: 1 }}>Content</FormLabel>
             <TextField
               {...register('content')}
               size='small'
@@ -124,7 +127,7 @@ const CreatePostModal = () => {
                 }
               }}
             />
-            <FormLabel sx={{ my: 2 }}>Tags (separate by commas)</FormLabel>
+            <FormLabel sx={{ my: 1 }}>Tags (separate by commas)</FormLabel>
             <TextField
               {...register('tags')}
               size='small'
@@ -135,7 +138,7 @@ const CreatePostModal = () => {
                 }
               }}
             />
-            <FormLabel sx={{ my: 2 }}>Image (optional)</FormLabel>
+            <FormLabel sx={{ my: 1 }}>Image (optional)</FormLabel>
             <Stack
               direction='row'
               spacing={1}
@@ -144,11 +147,10 @@ const CreatePostModal = () => {
                 cursor: 'pointer',
                 p: 1,
                 bgcolor: 'primary.main',
-                color: theme.palette.mode === 'dark' && '#000000DE',
+                color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-
                 borderRadius: '6px',
               }}
             >

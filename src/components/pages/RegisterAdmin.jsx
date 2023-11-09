@@ -1,14 +1,19 @@
-import { Button, FormLabel, Stack, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  Container,
+  FormLabel,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { useEffect, useRef, useState } from 'react';
-import { useTheme } from '@emotion/react';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import { useRegisterAdmin } from '../../lib/react-query/queries';
 import { useNavigate } from 'react-router-dom';
 
 const RegisterAdminPage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const theme = useTheme();
   const fileRef = useRef(null);
   const navigate = useNavigate();
   const { register, handleSubmit, control } = useForm();
@@ -42,83 +47,86 @@ const RegisterAdminPage = () => {
   }, [isSuccess, navigate]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={2} width={400} sx={{ m: 'auto' }}>
-        <h2>Register Admin</h2>
-        <FormLabel>Username</FormLabel>
-        <TextField
-          {...register('username')}
-          size='small'
-          fullWidth
-          variant='outlined'
-        />
-        <FormLabel>Email</FormLabel>
-        <TextField
-          {...register('email')}
-          size='small'
-          fullWidth
-          variant='outlined'
-        />
-        <FormLabel>Password</FormLabel>
-        <TextField
-          {...register('password')}
-          size='small'
-          fullWidth
-          type='password'
-          variant='outlined'
-        />
-        <FormLabel>Profile image (optional)</FormLabel>
-        <Stack
-          direction='row'
-          spacing={1}
-          onClick={() => fileRef.current.click()}
-          sx={{
-            cursor: 'pointer',
-            p: 1,
-            bgcolor: 'primary.main',
-            color: theme.palette.mode === 'dark' && '#000000DE',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <ImageOutlinedIcon />
-          <Typography variant='subtitle2'>Select File</Typography>
-        </Stack>
-        <Controller
-          control={control}
-          name='image'
-          render={({ field: { value, onChange, ref, ...field } }) => {
-            return (
-              <input
-                {...field}
-                value={value?.fileName}
-                onChange={(e) => {
-                  onChange(e.target.files[0]);
-                  setSelectedFile(e.target.files[0]);
-                }}
-                ref={(e) => {
-                  ref(e);
-                  fileRef.current = e;
-                }}
-                hidden
-                type='file'
-              />
-            );
-          }}
-        />
-        {selectedFile && (
-          <img
-            src={URL.createObjectURL(selectedFile)}
-            width={200}
-            height={200}
+    <Container maxWidth='lg'>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={2} width={350} sx={{ m: 'auto', p: 2 }}>
+          <h2>Register Admin</h2>
+          <FormLabel>Username</FormLabel>
+          <TextField
+            {...register('username')}
+            size='small'
+            fullWidth
+            variant='outlined'
           />
-        )}
-        <Button type='submit' variant='contained'>
-          Register
-        </Button>
-      </Stack>
-    </form>
+          <FormLabel>Email</FormLabel>
+          <TextField
+            {...register('email')}
+            size='small'
+            fullWidth
+            variant='outlined'
+          />
+          <FormLabel>Password</FormLabel>
+          <TextField
+            {...register('password')}
+            size='small'
+            fullWidth
+            type='password'
+            variant='outlined'
+          />
+          <FormLabel>Profile image (optional)</FormLabel>
+          <Stack
+            direction='row'
+            spacing={1}
+            onClick={() => fileRef.current.click()}
+            sx={{
+              cursor: 'pointer',
+              p: 1,
+              bgcolor: 'primary.main',
+              color: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '6px',
+            }}
+          >
+            <ImageOutlinedIcon />
+            <Typography variant='subtitle2'>Select File</Typography>
+          </Stack>
+          <Controller
+            control={control}
+            name='image'
+            render={({ field: { value, onChange, ref, ...field } }) => {
+              return (
+                <input
+                  {...field}
+                  value={value?.fileName}
+                  onChange={(e) => {
+                    onChange(e.target.files[0]);
+                    setSelectedFile(e.target.files[0]);
+                  }}
+                  ref={(e) => {
+                    ref(e);
+                    fileRef.current = e;
+                  }}
+                  hidden
+                  type='file'
+                />
+              );
+            }}
+          />
+          {selectedFile && (
+            <img
+              src={URL.createObjectURL(selectedFile)}
+              width={200}
+              height={200}
+            />
+          )}
+          <Button type='submit' variant='contained'>
+            Register
+          </Button>
+        </Stack>
+      </form>
+    </Container>
   );
 };
 

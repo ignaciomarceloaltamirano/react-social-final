@@ -11,6 +11,7 @@ const RecommendedWidget = ({ theme, communities }) => {
         my: 2,
         p: 2,
         borderRadius: '5px',
+        bgcolor: theme.palette.mode === 'light' && '#fff',
         border:
           theme.palette.mode === 'dark'
             ? '1px solid #ffffff1f'

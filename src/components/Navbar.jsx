@@ -134,13 +134,13 @@ const Navbar = ({ user, handleChange }) => {
                   <Stack direction='column'>
                     {filterLinks.map((link, index) => (
                       <Link
-                        className={
-                          theme.palette.mode === 'dark'
-                            ? 'dark-mode-link'
-                            : 'light-mode-link'
-                        }
                         key={index}
                         to={link.href}
+                        className={
+                          theme.palette.mode === 'light'
+                            ? 'light-mode-link'
+                            : ''
+                        }
                         onClick={handleCloseNavMenu}
                       >
                         <MenuItem>{link.text}</MenuItem>
@@ -203,7 +203,7 @@ const Navbar = ({ user, handleChange }) => {
                 <Divider />
                 <Link
                   className={
-                    theme.palette.mode === 'dark' ? '' : 'light-mode-link'
+                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
                   }
                   to='/'
                 >
@@ -211,7 +211,7 @@ const Navbar = ({ user, handleChange }) => {
                 </Link>
                 <Link
                   className={
-                    theme.palette.mode === 'dark' ? '' : 'light-mode-link'
+                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
                   }
                   to={`/users/${user?.username}`}
                 >
@@ -230,7 +230,7 @@ const Navbar = ({ user, handleChange }) => {
               </Menu>
             </Stack>
           ) : (
-            <Stack direction='row' spacing={2} sx={{ ml: 2 }}>
+            <Stack direction='row' spacing={2} sx={{ ml: 1 }}>
               <Button
                 component={Link}
                 to='/login'

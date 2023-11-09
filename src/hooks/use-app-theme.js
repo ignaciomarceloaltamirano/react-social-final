@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-export const useDarkMode = () => {
+export const useAppTheme = () => {
   const persistedMode = localStorage.getItem('mode') === 'dark';
   const [mode, setMode] = useState(persistedMode);
 
@@ -9,14 +9,22 @@ export const useDarkMode = () => {
     localStorage.setItem('mode', mode ? 'dark' : 'light');
   }, [mode]);
 
+  const handleChange = () => {
+    setMode((prevMode) => {
+      const newMode = !prevMode;
+      localStorage.setItem('mode', newMode ? 'dark' : 'light');
+      return newMode;
+    });
+  };
+
   const appTheme = createTheme({
     palette: {
       mode: mode ? 'dark' : 'light',
       primary: {
-        main: '#CDB4DB',
+        main: '#ABC4FF',
       },
       secondary: {
-        main: '#FFC8DD',
+        main: '#C1D3FE',
       },
       ...(mode
         ? {
@@ -30,14 +38,23 @@ export const useDarkMode = () => {
               disabled: '#ffffff80',
             },
           }
-        : {}),
+        : {
+            background: {
+              default: '#EDF2FB',
+            },
+          }),
     },
     components: {
       MuiButton: {
         styleOverrides: {
           root: {
+            color: '#fff',
             textTransform: 'capitalize',
             borderRadius: '6px',
+            boxShadow: 'none',
+            '&:hover': {
+              boxShadow: 'none',
+            },
           },
         },
       },
@@ -80,7 +97,7 @@ export const useDarkMode = () => {
       MuiTabPanel: {
         styleOverrides: {
           root: {
-            padding: '1rem 0',
+            padding: '1rem 0rem 0rem 0rem',
           },
         },
       },
@@ -95,13 +112,5 @@ export const useDarkMode = () => {
     },
   });
 
-  const handleChange = () => {
-    setMode((prevMode) => {
-      const newMode = !prevMode;
-      localStorage.setItem('mode', newMode ? 'dark' : 'light');
-      return newMode;
-    });
-  };
-
-  return { mode, appTheme, handleChange };
+  return { appTheme, mode, handleChange };
 };

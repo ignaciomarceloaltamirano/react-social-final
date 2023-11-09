@@ -20,6 +20,7 @@ import {
 } from '../lib/react-query/queries';
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 const CommunityModal = ({ feed, community }) => {
   const navigate = useNavigate();
@@ -58,12 +59,29 @@ const CommunityModal = ({ feed, community }) => {
           spacing={1}
           sx={{ display: 'flex', width: '100%', justifyContent: 'end' }}
         >
-          <Button sx={{}} variant='contained' onClick={handleOpen}>
-            Edit Community
-          </Button>
+          <IconButton
+            onClick={handleOpen}
+            sx={{
+              bgcolor: 'primary.main',
+              borderRadius: '5px',
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: '#7789b2',
+              },
+            }}
+          >
+            <EditIcon />
+          </IconButton>
           <IconButton
             onClick={handleDeleteCommunity}
-            sx={{ bgcolor: 'primary.main', borderRadius: '5px' }}
+            sx={{
+              bgcolor: 'primary.main',
+              borderRadius: '5px',
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: '#7789b2',
+              },
+            }}
           >
             <DeleteIcon />
           </IconButton>

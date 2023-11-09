@@ -26,7 +26,7 @@ const HomePage = () => {
 
   return (
     <Container maxWidth='lg'>
-      <Grid container spacing={2}>
+      <Grid container columnSpacing={2}>
         <Grid item xs={12} md={8}>
           <Typography sx={{ mb: 2 }} variant='h4'>
             Feed
@@ -48,6 +48,7 @@ const HomePage = () => {
             direction='column'
             spacing={1}
             sx={{
+              bgcolor: theme.palette.mode === 'light' && '#fff',
               borderRadius: '5px',
               border:
                 theme.palette.mode === 'dark'
@@ -79,6 +80,7 @@ const HomePage = () => {
             sx={{
               mt: 2,
               p: 2,
+              bgcolor: theme.palette.mode === 'light' && '#fff',
               borderRadius: '5px',
               border:
                 theme.palette.mode === 'dark'
