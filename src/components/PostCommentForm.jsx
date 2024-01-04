@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
-import { Button, FormLabel, Stack, TextField } from '@mui/material';
+import { Button, FormLabel, Stack, TextField, Typography } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { useCreateComment, useUpdateComment } from '../lib/react-query/queries';
 import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { commentSchema } from '../lib/zod/validations';
+import { useTheme } from '@emotion/react';
 
 const PostCommentForm = ({
   postId,
@@ -12,9 +15,16 @@ const PostCommentForm = ({
   updating,
   comment,
 }) => {
-  const { control, handleSubmit, reset, setValue } = useForm();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(commentSchema) });
   const { mutate: createComment } = useCreateComment();
   const { mutateAsync: updateComment } = useUpdateComment();
+  const theme = useTheme();
 
   useEffect(() => {
     if (updating && comment) {
@@ -58,6 +68,14 @@ const PostCommentForm = ({
               />
             )}
           />
+          {errors.text && (
+            <Typography
+              variant='subtitle2'
+              sx={{ color: theme.palette.error.main }}
+            >
+              {errors.text.message}
+            </Typography>
+          )}
           <Button sx={{ alignSelf: 'end' }} type='submit' variant='contained'>
             Submit
           </Button>

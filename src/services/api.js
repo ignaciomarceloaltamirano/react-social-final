@@ -35,11 +35,16 @@ instance.interceptors.response.use(
     if (originalConfig.url !== '/auth/login' && err.response) {
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true;
-
         try {
-          const res = await instance.post('/auth/refreshtoken', {
-            refreshToken: getLocalRefreshToken(),
-          });
+          const res = await axios.post(
+            'http://localhost:8080/auth/refresh-token',
+            {},
+            {
+              headers: {
+                Authorization: 'Bearer ' + getLocalRefreshToken(),
+              },
+            }
+          );
 
           const { accessToken } = res.data;
           updateLocalAccessToken(accessToken);
@@ -47,7 +52,11 @@ instance.interceptors.response.use(
           return instance(originalConfig);
         } catch (_error) {
           console.log(_error);
-          toast.error(_error.response.data.message);
+          if (_error.response.status === 401) {
+            toast.error('Refresh token expired. Please make a new sign in.', {
+              duration: 10000,
+            });
+          }
           return Promise.reject(_error);
         }
       }

@@ -28,6 +28,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import CustomTabPanel from '../CustomTabPanel';
+import UpdateUserModal from '../UpdateUserModal';
 
 const ProfilePage = () => {
   const params = useParams();
@@ -68,7 +69,7 @@ const ProfilePage = () => {
     userPosts?.pages.map((group) => group?.content).flatMap((p) => p.length) *
     userPosts?.pages.map((group) => group.totalPages);
 
-  const users = data?.filter((u) => u.id != user?.id);
+  const users = data?.filter((u) => u.id != currentUser?.id);
 
   const handleChange = (e, newValue) => {
     setValue(newValue);
@@ -79,9 +80,17 @@ const ProfilePage = () => {
       <Grid container columnSpacing={2}>
         <Grid item xs={12} md={8}>
           <Stack direction='row'>
-            <IconButton sx={{ p: 0 }}>
+            <IconButton
+              sx={{ cursor: 'default', p: 0 }}
+              disableFocusRipple
+              disableRipple
+            >
               {user?.imageUrl !== null ? (
-                <Avatar alt='Avatar' src={user?.imageUrl} />
+                <Avatar
+                  alt='Avatar'
+                  src={user?.imageUrl}
+                  sx={{ width: 60, height: 60 }}
+                />
               ) : (
                 <AccountCircle sx={{ fontSize: '6rem' }} />
               )}
@@ -95,6 +104,7 @@ const ProfilePage = () => {
                 {total} {total > 1 ? 'Posts' : 'Post'}
               </Typography>
             </Stack>
+            <UpdateUserModal profileUser={user} />
           </Stack>
           <Stack sx={{ mt: 1 }}>
             <TabContext value={value}>
@@ -161,8 +171,7 @@ const ProfilePage = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           <Stack
-            direction='column'
-            spacing={1}
+            spacing={2}
             sx={{
               mb: 2,
               p: 2,
@@ -176,27 +185,33 @@ const ProfilePage = () => {
             <Typography>Other users</Typography>
             <Divider />
             {users?.map((user) => (
-              <Stack key={user?.id} direction='row'>
-                <IconButton sx={{ p: 0 }}>
-                  {user?.imageUrl !== null ? (
-                    <Avatar alt='Avatar' src={user?.imageUrl} />
-                  ) : (
-                    <AccountCircle sx={{ fontSize: '2rem' }} />
-                  )}
-                </IconButton>
-                <Stack
-                  sx={{ display: 'flex', justifyContent: 'center', ml: 1 }}
+              <Stack key={user?.id}>
+                <Link
+                  className={
+                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
+                  }
+                  key={user.id}
+                  to={`/users/${user.username}`}
                 >
-                  <Link
-                    className={
-                      theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                    }
-                    key={user.id}
-                    to={`/users/${user.username}`}
+                  <Stack
+                    direction='row'
+                    spacing={1}
+                    sx={{ display: 'flex', alignItems: 'center', ml: 1 }}
                   >
+                    <IconButton sx={{ p: 0 }}>
+                      {user?.imageUrl !== null ? (
+                        <Avatar
+                          alt='Avatar'
+                          src={user?.imageUrl}
+                          sx={{ width: '2.5rem', height: '2.5rem' }}
+                        />
+                      ) : (
+                        <AccountCircle sx={{ fontSize: '2.5rem' }} />
+                      )}
+                    </IconButton>
                     <Typography variant='caption'>@{user.username}</Typography>
-                  </Link>
-                </Stack>
+                  </Stack>
+                </Link>
               </Stack>
             ))}
           </Stack>

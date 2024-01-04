@@ -14,67 +14,33 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import MenuIcon from '@mui/icons-material/Menu';
 import { AccountCircle } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
 import Brightness3Icon from '@mui/icons-material/Brightness3';
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
-import api from '../services/api';
-import { useMutation } from '@tanstack/react-query';
 import { removeUser } from '../services/token.service';
 import CommunityModal from './CommunityModal';
 import { useTheme } from '@emotion/react';
 import SearchForm from './SearchForm';
+import UpdatePasswordModal from './UpdatePasswordModal';
 
 const Navbar = ({ user, handleChange }) => {
-  const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const links = [
-    { href: '/register-admin', text: 'Register Admin', roles: ['ROLE_ADMIN'] },
-    {
-      href: '/register-mod',
-      text: 'Register Mod',
-      roles: ['ROLE_ADMIN', 'ROLE_MOD'],
-    },
-    { href: '/register', text: 'Register', roles: [], public: true },
-    { href: '/login', text: 'Log In', roles: [], public: true },
-  ];
-
-  const filterLinks = links
-    .filter((link) => !link.public)
-    .filter((link) => {
-      if (link.roles.length === 0) return true;
-      return link.roles.some((role) => user?.roles?.includes(role));
-    });
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
-  const { mutate: logout } = useMutation({
-    mutationFn: async () => {
-      const { data } = await api.post('/auth/logout');
-      return data;
-    },
-    onSuccess: () => {
-      removeUser();
-      navigate('/login');
-    },
-  });
+  const handleLogout = () => {
+    removeUser();
+    navigate('/login');
+  };
 
   return (
     <AppBar key={theme} position='sticky' sx={{ mb: 2 }}>
@@ -85,7 +51,7 @@ const Navbar = ({ user, handleChange }) => {
               Home
             </Typography>
           </Link>
-          {user && (
+          {/* {user && (
             <>
               {' '}
               <Stack
@@ -150,7 +116,7 @@ const Navbar = ({ user, handleChange }) => {
                 </Menu>
               </Stack>
             </>
-          )}
+          )} */}
           {user && (
             <Stack sx={{ mx: 'auto', width: 250 }}>
               <SearchForm />
@@ -219,10 +185,11 @@ const Navbar = ({ user, handleChange }) => {
                 </Link>
 
                 <CommunityModal />
+                <UpdatePasswordModal />
                 <MenuItem
                   onClick={() => {
                     handleCloseUserMenu();
-                    logout();
+                    handleLogout();
                   }}
                 >
                   Log out

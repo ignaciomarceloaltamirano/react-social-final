@@ -22,22 +22,6 @@ export const registerUser = async (user) => {
   });
 };
 
-export const registerMod = async (mod) => {
-  return await api.post('/auth/register-mod', mod, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-};
-
-export const registerAdmin = async (admin) => {
-  return await api.post('/auth/register-admin', admin, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-};
-
 export const getCurrentUser = () => {
   return getUser();
 };

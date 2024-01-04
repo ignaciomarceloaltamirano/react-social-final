@@ -18,7 +18,7 @@ const RecommendedWidget = ({ theme, communities }) => {
             : '1px solid #0000001f',
       }}
     >
-      <Typography>Recommended</Typography>
+      <Typography>Recommended communities</Typography>
       <Divider />
       {communities?.map((community) => (
         <Link

@@ -10,10 +10,19 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { useLogIn } from '../../lib/react-query/queries';
 import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTheme } from '@emotion/react';
+import { loginUserSchema } from '../../lib/zod/validations';
 
 const LoginPage = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(loginUserSchema) });
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const { mutateAsync: login, isSuccess } = useLogIn();
 
@@ -34,13 +43,21 @@ const LoginPage = () => {
           <Typography variant='h5' textAlign='center'>
             Log In
           </Typography>
-          <FormLabel>Username</FormLabel>
+          <FormLabel>Email</FormLabel>
           <TextField
-            {...register('username')}
+            {...register('email')}
             size='small'
             fullWidth
             variant='outlined'
           />
+          {errors.email && (
+            <Typography
+              variant='subtitle2'
+              sx={{ color: theme.palette.error.main }}
+            >
+              {errors.email.message}
+            </Typography>
+          )}
           <FormLabel>Password</FormLabel>
           <TextField
             {...register('password')}
@@ -49,6 +66,14 @@ const LoginPage = () => {
             type='password'
             variant='outlined'
           />
+          {errors.password && (
+            <Typography
+              variant='subtitle2'
+              sx={{ color: theme.palette.error.main }}
+            >
+              {errors.password.message}
+            </Typography>
+          )}
           <Button type='submit' variant='contained'>
             Log in
           </Button>

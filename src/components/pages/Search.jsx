@@ -36,7 +36,7 @@ const SearchPage = () => {
           {isLoading ? (
             <Loader />
           ) : !arePostsFound ? (
-            <Typography sx={{ mt: 2 }} variant='h5' align='center'>
+            <Typography sx={{ my: 2 }} variant='h5' align='center'>
               No posts found.
             </Typography>
           ) : (

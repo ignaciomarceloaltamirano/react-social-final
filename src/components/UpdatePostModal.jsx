@@ -12,30 +12,22 @@ import {
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { useTheme } from '@emotion/react';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
-import { useCreatePost, useGetCommunity } from '../lib/react-query/queries';
 import { useParams } from 'react-router-dom';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { postSchema } from '../lib/zod/validations';
+import EditIcon from '@mui/icons-material/Edit';
+import { useGetPost, useUpdatePost } from '../lib/react-query/queries';
 
-const CreatePostModal = () => {
+const UpdatePostModal = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const theme = useTheme();
   const fileRef = useRef(null);
   const params = useParams();
-  const {
-    register,
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = useForm({ resolver: zodResolver(postSchema) });
-  const { data: community } = useGetCommunity(params?.communityName);
-  const { mutateAsync: createPost, isPending } = useCreatePost();
+  const postId = params?.postId;
+  const { data: post } = useGetPost(postId);
+  const { register, handleSubmit, control, reset } = useForm();
+  const { mutateAsync: updatePost, status, isPending } = useUpdatePost();
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -56,39 +48,30 @@ const CreatePostModal = () => {
       formData.append('image', data.image);
     }
 
-    console.log(data);
-
-    await createPost({
+    await updatePost({
       formData,
       post: postBlob,
       image: data.image,
-      communityId: community?.id,
+      postId,
     });
 
-    reset();
-    handleClose();
+    if (status === 'success') {
+      reset();
+      handleClose();
+    }
   };
 
   return (
     <>
-      <Stack
-        direction='row'
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          bgcolor: theme.palette.mode === 'light' && '#fff',
-          border:
-            theme.palette.mode === 'dark'
-              ? '1px solid #ffffff1f'
-              : '1px solid #0000001f',
-          width: '100%',
-          cursor: 'pointer',
-          borderRadius: '6px',
+      <IconButton
+        sx={{ borderRadius: '5px' }}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOpen();
         }}
-        onClick={handleOpen}
       >
-        <Typography sx={{ ml: 2 }}>Create Post</Typography>
-      </Stack>
+        <EditIcon />
+      </IconButton>
       <Modal
         open={open}
         onClose={handleClose}
@@ -113,7 +96,7 @@ const CreatePostModal = () => {
               <CloseOutlinedIcon />
             </IconButton>
             <Typography sx={{ mb: 1 }} variant='h6' component='h2'>
-              Create a post
+              Update Post
             </Typography>
             <Divider />
             <FormLabel sx={{ my: 1 }}>Title</FormLabel>
@@ -121,39 +104,25 @@ const CreatePostModal = () => {
               {...register('title')}
               size='small'
               fullWidth
+              defaultValue={post?.title}
               onKeyDown={(e) => {
                 if (e.key === 'a') {
                   e.stopPropagation();
                 }
               }}
             />
-            {errors.title && (
-              <Typography
-                variant='subtitle2'
-                sx={{ mt: 2, color: theme.palette.error.main }}
-              >
-                {errors.title.message}
-              </Typography>
-            )}
             <FormLabel sx={{ my: 1 }}>Content</FormLabel>
             <TextField
               {...register('content')}
               size='small'
               fullWidth
+              defaultValue={post?.content}
               onKeyDown={(e) => {
                 if (e.key === 'a') {
                   e.stopPropagation();
                 }
               }}
             />
-            {errors.content && (
-              <Typography
-                variant='subtitle2'
-                sx={{ mt: 2, color: theme.palette.error.main }}
-              >
-                {errors.content.message}
-              </Typography>
-            )}
             <FormLabel sx={{ my: 1 }}>Tags (separate by commas)</FormLabel>
             <TextField
               {...register('tags')}
@@ -165,19 +134,13 @@ const CreatePostModal = () => {
                 }
               }}
             />
-            {errors.tags && (
-              <Typography
-                variant='subtitle2'
-                sx={{ mt: 2, color: theme.palette.error.main }}
-              >
-                {errors.tags.message}
-              </Typography>
-            )}
             <FormLabel sx={{ my: 1 }}>Image (optional)</FormLabel>
             <Stack
               direction='row'
               spacing={1}
-              onClick={() => fileRef.current.click()}
+              onClick={() => {
+                fileRef.current.click();
+              }}
               sx={{
                 cursor: 'pointer',
                 p: 1,
@@ -187,6 +150,7 @@ const CreatePostModal = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: '6px',
+                zIndex: 10,
               }}
             >
               <ImageOutlinedIcon />
@@ -214,22 +178,25 @@ const CreatePostModal = () => {
                 );
               }}
             />
-            {selectedFile && (
-              <Stack sx={{ mt: 2 }}>
+            <Stack sx={{ mt: selectedFile || post?.imageUrl ? 2 : 0 }}>
+              {selectedFile ? (
                 <img
                   src={URL.createObjectURL(selectedFile)}
                   width={200}
                   height={200}
                 />
-              </Stack>
-            )}
+              ) : (
+                post?.imageUrl && (
+                  <img src={post?.imageUrl} width={200} height={200} />
+                )
+              )}
+            </Stack>
             <Button
               sx={{ alignSelf: 'start', mt: 2 }}
               type='submit'
               variant='contained'
-              disabled={isPending}
             >
-              {isPending ? 'Loading...' : 'Create'}
+              {isPending ? 'Updating...' : 'Update'}
             </Button>
           </Stack>
         </form>
@@ -238,4 +205,4 @@ const CreatePostModal = () => {
   );
 };
 
-export default CreatePostModal;
+export default UpdatePostModal;

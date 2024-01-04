@@ -19,6 +19,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getCurrentUser } from '../services/auth.service';
+import toast from 'react-hot-toast';
 
 const Post = ({ post }) => {
   const theme = useTheme();
@@ -52,6 +53,7 @@ const Post = ({ post }) => {
   const handleDeletePost = async (e) => {
     e.stopPropagation();
     deletePost(post?.id);
+    toast.success('Post deleted');
   };
 
   return (
@@ -106,12 +108,14 @@ const Post = ({ post }) => {
               >
                 <Typography variant='h5'> {post?.title}</Typography>
                 {user?.id === post?.authorId && (
-                  <IconButton
-                    onClick={handleDeletePost}
-                    sx={{ borderRadius: '5px' }}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
+                  <Stack direction='row' spacing={1}>
+                    <IconButton
+                      onClick={handleDeletePost}
+                      sx={{ borderRadius: '5px' }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Stack>
                 )}
               </Stack>
               <Typography variant='body2'>{post?.content}</Typography>
@@ -122,6 +126,9 @@ const Post = ({ post }) => {
                     <Link
                       key={i}
                       to={`/tags/${tag}`}
+                      className={
+                        theme.palette.mode === 'light' ? 'light-mode-link' : ''
+                      }
                       onClick={(e) => {
                         e.stopPropagation();
                       }}

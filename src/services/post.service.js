@@ -14,6 +14,15 @@ export const createPost = async (formData) => {
   return data;
 };
 
+export const updatePost = async (formData) => {
+  const { data } = await api.put(`/posts/${formData.postId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data;
+};
+
 export const getCommunityPosts = async (communityId, page = 1) => {
   const { data } = await api.get(
     `/posts/communities/${communityId}/page/${page}`

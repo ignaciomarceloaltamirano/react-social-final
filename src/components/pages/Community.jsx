@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getCurrentUser } from '../../services/auth.service';
 import { AccountCircle } from '@mui/icons-material';
 import CreatePostModal from '../CreatePostModal';
@@ -87,13 +87,15 @@ const CommunityPage = () => {
               )}
             </Stack>
             <Stack direction='row' spacing={1} sx={{ my: 2 }}>
-              <IconButton>
-                {user?.imageUrl !== null ? (
-                  <Avatar alt='Avatar' src={user?.imageUrl} />
-                ) : (
-                  <AccountCircle />
-                )}
-              </IconButton>
+              <Link to={`/users/${user?.username}`}>
+                <IconButton>
+                  {user?.imageUrl !== null ? (
+                    <Avatar alt='Avatar' src={user?.imageUrl} />
+                  ) : (
+                    <AccountCircle />
+                  )}
+                </IconButton>
+              </Link>
               <CreatePostModal />
             </Stack>
             <Stack>

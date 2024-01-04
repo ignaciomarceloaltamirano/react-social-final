@@ -6,9 +6,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import {
+  getCurrentUser,
   login,
-  registerAdmin,
-  registerMod,
   registerUser,
 } from '../../services/auth.service';
 import {
@@ -39,6 +38,7 @@ import {
   isPostSaved,
   savePost,
   unSavePost,
+  updatePost,
 } from '../../services/post.service';
 import { getTags } from '../../services/tag.service';
 import {
@@ -57,7 +57,12 @@ import {
   getCurrentCommentVote,
   voteComment,
 } from '../../services/comment-vote.service';
-import { getUser, getUsers } from '../../services/user.service';
+import {
+  getUser,
+  getUsers,
+  updatePassword,
+  updateUser,
+} from '../../services/user.service';
 import { searchPosts } from '../../services/search.service';
 
 /* ***** USERS ***** */
@@ -65,7 +70,9 @@ export const useLogIn = () => {
   return useMutation({
     mutationFn: (user) => login(user),
     onError: (res) => {
-      toast.error(res.response.data.error);
+      if (res.response.status === 401) {
+        toast.error('Bad credentials.');
+      }
     },
   });
 };
@@ -73,38 +80,6 @@ export const useLogIn = () => {
 export const useRegisterUser = () => {
   return useMutation({
     mutationFn: (user) => registerUser(user),
-    onSuccess: (res) => {
-      toast.success(res.data.message);
-    },
-    onError: (error) => {
-      if (error.response.status === 409) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.response.data.error);
-      }
-    },
-  });
-};
-
-export const useRegisterMod = () => {
-  return useMutation({
-    mutationFn: (mod) => registerMod(mod),
-    onSuccess: (res) => {
-      toast.success(res.data.message);
-    },
-    onError: (error) => {
-      if (error.response.status === 409) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.response.data.error);
-      }
-    },
-  });
-};
-
-export const useRegisterAdmin = () => {
-  return useMutation({
-    mutationFn: (admin) => registerAdmin(admin),
     onSuccess: (res) => {
       toast.success(res.data.message);
     },
@@ -133,6 +108,56 @@ export const useGetUsers = () => {
   });
 };
 
+export const useUpdateUser = () => {
+  const user = getCurrentUser();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data) => updateUser(data),
+    onSuccess: (res) => {
+      const updatedUser = {
+        ...user,
+        username: res.username,
+        imageUrl: res.imageUrl,
+      };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      toast.success('User updated.');
+      queryClient.invalidateQueries('users');
+      navigate(`/users/${res.username}`);
+    },
+    onError: (error) => {
+      console.log(error);
+      if (error.status === 400) {
+        toast.error(error.message);
+      } else if (error.response.status === 401) {
+        toast.error('Name or email already taken.');
+      } else {
+        toast.error(error.response.data.message);
+      }
+    },
+  });
+};
+
+export const useUpdatePassword = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data) => updatePassword(data),
+    onSuccess: () => {
+      toast.success('Password updated.');
+      queryClient.invalidateQueries('users');
+    },
+    onError: (error) => {
+      if (error.status === 400) {
+        toast.error(error.message);
+      } else {
+        toast.error(error.response.data.message);
+      }
+    },
+  });
+};
+
 /* ***** COMMUNITIES ***** */
 export const useGetCommunity = (communityName) => {
   return useQuery({
@@ -155,7 +180,7 @@ export const useCreateCommunity = () => {
   return useMutation({
     mutationFn: (community) => createCommunity(community),
     onSuccess: (res) => {
-      toast.success(`Community "${res.name}" created`);
+      toast.success(`Community "${res.name}" created.`);
       navigate(`/communities/${res.name}`);
     },
     onError: (error) => {
@@ -374,6 +399,25 @@ export const useCreatePost = () => {
   });
 };
 
+export const useUpdatePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (formData) => updatePost(formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries('posts');
+    },
+    onError: (error) => {
+      console.log(error);
+      if (error.status === 400) {
+        toast.error(error.message);
+      } else {
+        toast.error(error.response.data.message);
+      }
+    },
+  });
+};
+
 export const useIsPostSaved = (postId) => {
   return useQuery({
     queryKey: ['post', postId],
@@ -389,7 +433,7 @@ export const useSavePost = () => {
     mutationFn: (postId) => savePost(postId),
     onSuccess: (res, postId) => {
       queryClient.invalidateQueries(['post', postId]);
-      toast.success(res.message);
+      toast.success('Post saved');
     },
     onError: (error) => {
       if (error.status === 400) {
@@ -408,7 +452,7 @@ export const useUnSavePost = () => {
     mutationFn: (postId) => unSavePost(postId),
     onSuccess: (res, postId) => {
       queryClient.invalidateQueries(['post', postId]);
-      toast.success(res.message);
+      toast.success('Post unsaved');
     },
     onError: (error) => {
       if (error.status === 400) {
@@ -425,8 +469,7 @@ export const useDeletePost = () => {
 
   return useMutation({
     mutationFn: (postId) => deletePost(postId),
-    onSuccess: (res) => {
-      toast.success(res.message);
+    onSuccess: () => {
       queryClient.invalidateQueries(['posts']);
     },
     onError: (error) => {
@@ -499,7 +542,7 @@ export const useCreateComment = () => {
     mutationFn: (postId, text, replyToId) =>
       createComment(postId, text, replyToId),
     onSuccess: (postId) => {
-      toast.success('Comment created');
+      toast.success('Comment created.');
       queryClient.invalidateQueries(['post', postId]);
     },
     onError: (error) => {
@@ -518,7 +561,7 @@ export const useUpdateComment = () => {
   return useMutation({
     mutationFn: (commentId) => updateComment(commentId),
     onSuccess: () => {
-      toast.success('Comment updated');
+      toast.success('Comment updated.');
       queryClient.invalidateQueries('post-comments');
     },
     onError: (error) => {
@@ -536,8 +579,8 @@ export const useDeleteComment = () => {
 
   return useMutation({
     mutationFn: (commentId) => deleteComment(commentId),
-    onSuccess: (res) => {
-      toast.success(res.message);
+    onSuccess: () => {
+      toast.success('Comment deleted.');
       queryClient.invalidateQueries(['current-comment-vote']);
       queryClient.invalidateQueries(['comment-votes']);
     },

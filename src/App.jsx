@@ -1,10 +1,8 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
 import HomePage from './components/pages/Home';
-import RegisterAdminPage from './components/pages/RegisterAdmin';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
-import RegisterModPage from './components/pages/RegisterMod';
 import RegisterUserPage from './components/pages/RegisterUser';
 import LoginPage from './components/pages/Login';
 import AuthLayout from './components/AuthLayout';
@@ -43,8 +41,6 @@ function App() {
             <Route path='/tags/:tagName' element={<TagPostsPage />} />
             <Route path='/posts/:postId' element={<PostPage />} />
             <Route path='/users/:username' element={<ProfilePage />} />
-            <Route path='/register-admin' element={<RegisterAdminPage />} />
-            <Route path='/register-mod' element={<RegisterModPage />} />
             <Route path='/search' element={<SearchPage />} />
           </Route>
         </Routes>

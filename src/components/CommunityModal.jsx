@@ -21,13 +21,22 @@ import {
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { communitySchema } from '../lib/zod/validations';
+import { useTheme } from '@emotion/react';
 
 const CommunityModal = ({ feed, community }) => {
   const navigate = useNavigate();
+  const theme = useTheme();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(communitySchema) });
 
   const { mutateAsync: createCommunity } = useCreateCommunity();
   const { mutateAsync: updateCommunity } = useUpdateCommunity();
@@ -41,6 +50,7 @@ const CommunityModal = ({ feed, community }) => {
       createCommunity(data);
     }
     handleClose();
+    reset();
   };
 
   const handleDeleteCommunity = async () => {
@@ -122,11 +132,19 @@ const CommunityModal = ({ feed, community }) => {
               defaultValue={community?.name || ''}
               fullWidth
               onKeyDown={(e) => {
-                if (e.key === 'a') {
+                if (e.key === 'a' || e.key === 's') {
                   e.stopPropagation();
                 }
               }}
             />
+            {errors.name && (
+              <Typography
+                variant='subtitle2'
+                sx={{ mt: 2, color: theme.palette.error.main }}
+              >
+                {errors.name.message}
+              </Typography>
+            )}
             <Button
               sx={{ alignSelf: 'start', mt: 2 }}
               type='submit'

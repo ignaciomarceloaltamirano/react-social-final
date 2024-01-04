@@ -12,14 +12,26 @@ import { Link, useNavigate } from 'react-router-dom';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import { useRegisterUser } from '../../lib/react-query/queries';
 import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTheme } from '@emotion/react';
+import { registerUserSchema } from '../../lib/zod/validations';
 
 const RegisterUserPage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const { register, handleSubmit, control } = useForm();
   const fileRef = useRef(null);
+  const theme = useTheme();
   const navigate = useNavigate();
 
-  const { mutateAsync: registerUser, isSuccess } = useRegisterUser();
+  const { mutateAsync: registerUser, isSuccess, isPending } = useRegisterUser();
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registerUserSchema),
+  });
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -62,6 +74,14 @@ const RegisterUserPage = () => {
             fullWidth
             variant='outlined'
           />
+          {errors.username && (
+            <Typography
+              variant='subtitle2'
+              sx={{ color: theme.palette.error.main }}
+            >
+              {errors.username.message}
+            </Typography>
+          )}
           <FormLabel>Email</FormLabel>
           <TextField
             {...register('email')}
@@ -69,6 +89,14 @@ const RegisterUserPage = () => {
             fullWidth
             variant='outlined'
           />
+          {errors.email && (
+            <Typography
+              variant='subtitle2'
+              sx={{ color: theme.palette.error.main }}
+            >
+              {errors.email.message}
+            </Typography>
+          )}
           <FormLabel>Password</FormLabel>
           <TextField
             {...register('password')}
@@ -77,6 +105,14 @@ const RegisterUserPage = () => {
             type='password'
             variant='outlined'
           />
+          {errors.password && (
+            <Typography
+              variant='subtitle2'
+              sx={{ color: theme.palette.error.main }}
+            >
+              {errors.password.message}
+            </Typography>
+          )}
           <FormLabel>Profile image (optional)</FormLabel>
           <Stack
             direction='row'
@@ -125,8 +161,8 @@ const RegisterUserPage = () => {
               height={200}
             />
           )}
-          <Button type='submit' variant='contained'>
-            Register
+          <Button type='submit' variant='contained' disabled={isPending}>
+            {isPending ? 'Loading...' : 'Register'}
           </Button>
           <Stack direction='row' spacing={2}>
             <Typography variant='sub'>Already have an account?</Typography>

@@ -23,13 +23,19 @@ const Comment = ({ comment, replies, getReplies }) => {
         sx={{ display: 'flex', alignItems: 'center' }}
         spacing={1}
       >
-        <IconButton sx={{ p: 0 }} size='medium'>
-          {comment.authorImageUrl !== null ? (
-            <Avatar alt='Avatar' src={comment.authorImageUrl} />
-          ) : (
-            <AccountCircle />
-          )}
-        </IconButton>
+        <Link to={`/users/${comment?.authorName}`}>
+          <IconButton sx={{ p: 0 }} size='medium'>
+            {comment.authorImageUrl !== null ? (
+              <Avatar
+                alt='Avatar'
+                src={comment.authorImageUrl}
+                sx={{ width: 50, height: 50 }}
+              />
+            ) : (
+              <AccountCircle />
+            )}
+          </IconButton>
+        </Link>
         <Link
           className={theme.palette.mode === 'light' ? 'light-mode-link' : ''}
           to={`/users/${comment?.authorName}`}
