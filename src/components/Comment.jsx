@@ -32,7 +32,7 @@ const Comment = ({ comment, replies, getReplies }) => {
                 sx={{ width: 50, height: 50 }}
               />
             ) : (
-              <AccountCircle />
+              <AccountCircle sx={{ fontSize: '3.125rem' }} />
             )}
           </IconButton>
         </Link>

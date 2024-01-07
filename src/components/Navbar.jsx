@@ -125,11 +125,11 @@ const Navbar = ({ user, handleChange }) => {
           <Stack sx={{ ml: 'auto' }}>
             {theme.palette.mode === 'dark' ? (
               <IconButton onClick={handleChange}>
-                <WbSunnyOutlinedIcon />
+                <WbSunnyOutlinedIcon sx={{ width: 30, height: 30 }} />
               </IconButton>
             ) : (
               <IconButton onClick={handleChange}>
-                <Brightness3Icon />
+                <Brightness3Icon sx={{ width: 30, height: 30 }} />
               </IconButton>
             )}
           </Stack>
@@ -138,9 +138,13 @@ const Navbar = ({ user, handleChange }) => {
               <Tooltip title='Open settings'>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   {user?.imageUrl !== null ? (
-                    <Avatar alt='Avatar' src={user?.imageUrl} />
+                    <Avatar
+                      alt='Avatar'
+                      src={user?.imageUrl}
+                      sx={{ width: 35, height: 35 }}
+                    />
                   ) : (
-                    <AccountCircle />
+                    <AccountCircle sx={{ fontSize: '2.188rem' }} />
                   )}
                 </IconButton>
               </Tooltip>
