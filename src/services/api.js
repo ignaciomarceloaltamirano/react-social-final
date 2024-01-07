@@ -54,8 +54,10 @@ instance.interceptors.response.use(
           console.log(_error);
           if (_error.response.status === 401) {
             toast.error('Refresh token expired. Please make a new sign in.', {
-              duration: 10000,
+              duration: 4000,
             });
+          } else if (_error.response.status === 429) {
+            return;
           }
           return Promise.reject(_error);
         }

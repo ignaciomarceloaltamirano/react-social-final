@@ -8,7 +8,6 @@ import { Container, Grid } from '@mui/material';
 import RecommendedWidget from '../RecommendedWidget';
 import { useTheme } from '@emotion/react';
 import AboutCommunityWidget from '../AboutCommunityWidget';
-import toast from 'react-hot-toast';
 import Loader from '../Loader';
 import PostWithComment from '../PostWithComment';
 
@@ -24,12 +23,7 @@ const PostPage = () => {
   const community = data?.find(
     (community) => community?.name === post?.communityName
   );
-  const { data: membersCount, error: membersCountError } =
-    useGetCommunityMembersCount(community?.id);
-
-  if (membersCountError) {
-    return toast.error(membersCountError?.response.data.message);
-  }
+  const { data: membersCount } = useGetCommunityMembersCount(community?.id);
   return (
     <Container maxWidth='lg'>
       {isLoading ? (

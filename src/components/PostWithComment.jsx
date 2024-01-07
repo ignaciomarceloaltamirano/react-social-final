@@ -22,7 +22,6 @@ import Comments from './Comments';
 import UpdatePostModal from './UpdatePostModal';
 import { getCurrentUser } from '../services/auth.service';
 import DeleteIcon from '@mui/icons-material/Delete';
-import toast from 'react-hot-toast';
 
 const PostWithComment = ({ post }) => {
   const theme = useTheme();
@@ -45,14 +44,12 @@ const PostWithComment = ({ post }) => {
 
   const handleDeletePost = async () => {
     deletePost(post?.id);
-    toast.success('Post deleted');
   };
 
   const totalVotes =
     postVotes &&
     postVotes?.reduce((a, c) => (c.type === 'UPVOTE' ? a + 1 : a - 1), 0);
 
-  console.log(post?.tags.flatMap((t) => t));
   return (
     <Stack sx={{ mb: 2 }}>
       <Paper sx={{ p: 2, borderRadius: '5px' }}>

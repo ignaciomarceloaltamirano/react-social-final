@@ -19,7 +19,6 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getCurrentUser } from '../services/auth.service';
-import toast from 'react-hot-toast';
 
 const Post = ({ post }) => {
   const theme = useTheme();
@@ -53,7 +52,6 @@ const Post = ({ post }) => {
   const handleDeletePost = async (e) => {
     e.stopPropagation();
     deletePost(post?.id);
-    toast.success('Post deleted');
   };
 
   return (

@@ -465,12 +465,15 @@ export const useUnSavePost = () => {
 };
 
 export const useDeletePost = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (postId) => deletePost(postId),
     onSuccess: () => {
       queryClient.invalidateQueries(['posts']);
+      toast.success('Post deleted');
+      navigate('/');
     },
     onError: (error) => {
       if (error.status === 400) {
