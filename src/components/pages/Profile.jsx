@@ -29,13 +29,14 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import CustomTabPanel from '../CustomTabPanel';
 import UpdateUserModal from '../UpdateUserModal';
+import Loader from '../Loader';
 
 const ProfilePage = () => {
   const params = useParams();
   const theme = useTheme();
   const currentUser = getCurrentUser();
   const [value, setValue] = useState('1');
-  const { data: user } = useGetUser(params?.username);
+  const { data: user, isLoading: userIsLoading } = useGetUser(params?.username);
   const { data } = useGetUsers();
   const {
     data: userPosts,
@@ -79,142 +80,154 @@ const ProfilePage = () => {
     <Container maxWidth='md'>
       <Grid container columnSpacing={2}>
         <Grid item xs={12} md={8}>
-          <Stack direction='row'>
-            <IconButton
-              sx={{ cursor: 'default', p: 0 }}
-              disableFocusRipple
-              disableRipple
-            >
-              {user?.imageUrl !== null ? (
-                <Avatar
-                  alt='Avatar'
-                  src={user?.imageUrl}
-                  sx={{ width: 60, height: 60 }}
-                />
-              ) : (
-                <AccountCircle sx={{ fontSize: '6rem' }} />
-              )}
-            </IconButton>
-            <Stack sx={{ display: 'flex', justifyContent: 'center', ml: 1 }}>
-              <Typography variant='h5'>
-                <b>{user?.username}</b>
-              </Typography>
-              <Typography variant='body1'>@{user?.username}</Typography>
-              <Typography variant='body1'>
-                {total} {total > 1 ? 'Posts' : 'Post'}
-              </Typography>
-            </Stack>
-            <UpdateUserModal profileUser={user} />
-          </Stack>
-          <Stack sx={{ mt: 1 }}>
-            <TabContext value={value}>
-              <TabList variant='scrollable' onChange={handleChange}>
-                <Tab
-                  icon={<ImageIcon />}
-                  iconPosition='start'
-                  label='Posts'
-                  value='1'
-                />
-                <Tab
-                  icon={<ArrowUpwardIcon />}
-                  iconPosition='start'
-                  label='Upvoted Posts'
-                  value='2'
-                />
-                <Tab
-                  icon={<ArrowDownwardIcon />}
-                  iconPosition='start'
-                  label='Downvoted Posts'
-                  value='3'
-                />
-                {currentUser?.id === user?.id && (
-                  <Tab
-                    icon={<InsertDriveFileIcon />}
-                    iconPosition='start'
-                    label='Saved Posts'
-                    value={'4' || false}
+          {userIsLoading ? (
+            <Loader />
+          ) : (
+            <>
+              <Stack direction='row'>
+                <IconButton
+                  sx={{ cursor: 'default', p: 0 }}
+                  disableFocusRipple
+                  disableRipple
+                >
+                  {user?.imageUrl !== null ? (
+                    <Avatar
+                      alt='Avatar'
+                      src={user?.imageUrl}
+                      sx={{ width: 60, height: 60 }}
+                    />
+                  ) : (
+                    <AccountCircle sx={{ fontSize: '6rem' }} />
+                  )}
+                </IconButton>
+                <Stack
+                  sx={{ display: 'flex', justifyContent: 'center', ml: 1 }}
+                >
+                  <Typography variant='h5'>
+                    <b>{user?.username}</b>
+                  </Typography>
+                  <Typography variant='body1'>@{user?.username}</Typography>
+                  <Typography variant='body1'>
+                    {total} {total > 1 ? 'Posts' : 'Post'}
+                  </Typography>
+                </Stack>
+                <UpdateUserModal profileUser={user} />
+              </Stack>
+              <Stack sx={{ mt: 1 }}>
+                <TabContext value={value}>
+                  <TabList variant='scrollable' onChange={handleChange}>
+                    <Tab
+                      icon={<ImageIcon />}
+                      iconPosition='start'
+                      label='Posts'
+                      value='1'
+                    />
+                    <Tab
+                      icon={<ArrowUpwardIcon />}
+                      iconPosition='start'
+                      label='Upvoted Posts'
+                      value='2'
+                    />
+                    <Tab
+                      icon={<ArrowDownwardIcon />}
+                      iconPosition='start'
+                      label='Downvoted Posts'
+                      value='3'
+                    />
+                    {currentUser?.id === user?.id && (
+                      <Tab
+                        icon={<InsertDriveFileIcon />}
+                        iconPosition='start'
+                        label='Saved Posts'
+                        value={'4' || false}
+                      />
+                    )}
+                  </TabList>
+                  <CustomTabPanel
+                    data={userPosts}
+                    value={'1'}
+                    fetchNextPage={fetchNextPage}
+                    hasNextPage={hasNextPage}
+                    isLoading={isLoading}
                   />
-                )}
-              </TabList>
-              <CustomTabPanel
-                data={userPosts}
-                value={'1'}
-                fetchNextPage={fetchNextPage}
-                hasNextPage={hasNextPage}
-                isLoading={isLoading}
-              />
-              <CustomTabPanel
-                data={userUpVotedPosts}
-                value={'2'}
-                fetchNextPage={upVotedPostsFetchNextPage}
-                hasNextPage={upVotedPostsHasNextPage}
-                isLoading={upVotedPostsIsLoading}
-              />
-              <CustomTabPanel
-                data={userDownVotedPosts}
-                value={'3'}
-                fetchNextPage={downVotedPostsFetchNextPage}
-                hasNextPage={downVotedPostsHasNextPage}
-                isLoading={downVotedPostsIsLoading}
-              />
-              {currentUser?.id === user?.id && (
-                <CustomTabPanel
-                  data={userSavedPosts}
-                  value={'4'}
-                  fetchNextPage={savedPostsFetchNextPage}
-                  hasNextPage={savedPostsHasNextPage}
-                  isLoading={savedPostsIsLoading}
-                />
-              )}
-            </TabContext>
-          </Stack>
+                  <CustomTabPanel
+                    data={userUpVotedPosts}
+                    value={'2'}
+                    fetchNextPage={upVotedPostsFetchNextPage}
+                    hasNextPage={upVotedPostsHasNextPage}
+                    isLoading={upVotedPostsIsLoading}
+                  />
+                  <CustomTabPanel
+                    data={userDownVotedPosts}
+                    value={'3'}
+                    fetchNextPage={downVotedPostsFetchNextPage}
+                    hasNextPage={downVotedPostsHasNextPage}
+                    isLoading={downVotedPostsIsLoading}
+                  />
+                  {currentUser?.id === user?.id && (
+                    <CustomTabPanel
+                      data={userSavedPosts}
+                      value={'4'}
+                      fetchNextPage={savedPostsFetchNextPage}
+                      hasNextPage={savedPostsHasNextPage}
+                      isLoading={savedPostsIsLoading}
+                    />
+                  )}
+                </TabContext>
+              </Stack>
+            </>
+          )}
         </Grid>
         <Grid item xs={12} md={4}>
-          <Stack
-            spacing={2}
-            sx={{
-              mb: 2,
-              p: 2,
-              borderRadius: '5px',
-              border:
-                theme.palette.mode === 'dark'
-                  ? '1px solid #ffffff1f'
-                  : '1px solid #0000001f',
-            }}
-          >
-            <Typography>Other users</Typography>
-            <Divider />
-            {users?.map((user) => (
-              <Stack key={user?.id}>
-                <Link
-                  className={
-                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                  }
-                  key={user.id}
-                  to={`/users/${user.username}`}
-                >
-                  <Stack
-                    direction='row'
-                    spacing={1}
-                    sx={{ display: 'flex', alignItems: 'center', ml: 1 }}
+          {users?.length > 0 && (
+            <Stack
+              spacing={2}
+              sx={{
+                mb: 2,
+                p: 2,
+                borderRadius: '5px',
+                border:
+                  theme.palette.mode === 'dark'
+                    ? '1px solid #ffffff1f'
+                    : '1px solid #0000001f',
+              }}
+            >
+              <Typography>Other users</Typography>
+              <Divider />
+              {users?.map((user) => (
+                <Stack key={user?.id}>
+                  <Link
+                    className={
+                      theme.palette.mode === 'light' ? 'light-mode-link' : ''
+                    }
+                    key={user.id}
+                    to={`/users/${user.username}`}
                   >
-                    <IconButton sx={{ p: 0 }}>
-                      {user?.imageUrl !== null ? (
-                        <Avatar
-                          alt='Avatar'
-                          src={user?.imageUrl}
-                          sx={{ width: '2.5rem', height: '2.5rem' }}
-                        />
-                      ) : (
-                        <AccountCircle sx={{ fontSize: '2.5rem' }} />
-                      )}
-                    </IconButton>
-                    <Typography variant='caption'>@{user.username}</Typography>
-                  </Stack>
-                </Link>
-              </Stack>
-            ))}
-          </Stack>
+                    <Stack
+                      direction='row'
+                      spacing={1}
+                      sx={{ display: 'flex', alignItems: 'center', ml: 1 }}
+                    >
+                      <IconButton sx={{ p: 0 }}>
+                        {user?.imageUrl !== null ? (
+                          <Avatar
+                            alt='Avatar'
+                            src={user?.imageUrl}
+                            sx={{ width: '2.5rem', height: '2.5rem' }}
+                          />
+                        ) : (
+                          <AccountCircle sx={{ fontSize: '2.5rem' }} />
+                        )}
+                      </IconButton>
+                      <Typography variant='caption'>
+                        @{user.username}
+                      </Typography>
+                    </Stack>
+                  </Link>
+                </Stack>
+              ))}
+            </Stack>
+          )}
         </Grid>
       </Grid>
     </Container>

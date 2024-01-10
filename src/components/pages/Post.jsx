@@ -4,7 +4,7 @@ import {
   useGetCommunityMembersCount,
   useGetPost,
 } from '../../lib/react-query/queries';
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, Stack } from '@mui/material';
 import RecommendedWidget from '../RecommendedWidget';
 import { useTheme } from '@emotion/react';
 import AboutCommunityWidget from '../AboutCommunityWidget';
@@ -27,7 +27,9 @@ const PostPage = () => {
   return (
     <Container maxWidth='lg'>
       {isLoading ? (
-        <Loader />
+        <Stack sx={{ mt: 4 }}>
+          <Loader />
+        </Stack>
       ) : (
         <Grid container columnSpacing={2}>
           <Grid item xs={12} md={8}>
@@ -39,7 +41,9 @@ const PostPage = () => {
               community={community}
               membersCount={membersCount}
             />
-            <RecommendedWidget communities={recommended} theme={theme} />
+            {recommended?.length > 0 && (
+              <RecommendedWidget communities={recommended} theme={theme} />
+            )}
           </Grid>
         </Grid>
       )}

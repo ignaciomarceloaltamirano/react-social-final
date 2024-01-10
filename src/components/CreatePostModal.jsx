@@ -56,8 +56,6 @@ const CreatePostModal = () => {
       formData.append('image', data.image);
     }
 
-    console.log(data);
-
     await createPost({
       formData,
       post: postBlob,

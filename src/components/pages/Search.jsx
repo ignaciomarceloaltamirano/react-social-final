@@ -50,32 +50,36 @@ const SearchPage = () => {
           )}
         </Grid>
         <Grid item xs={12} md={4}>
-          <Stack
-            direction='column'
-            spacing={1}
-            sx={{
-              p: 2,
-              border:
-                theme.palette.mode === 'dark'
-                  ? '1px solid #ffffff1f'
-                  : '1px solid #0000001f',
-            }}
-          >
-            <Typography>Tags</Typography>
-            <Divider />
-            {tags?.map((tag) => (
-              <Link
-                className={
-                  theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                }
-                key={tag.id}
-                to={`/tags/${tag.name}`}
-              >
-                <Typography>#{tag.name}</Typography>
-              </Link>
-            ))}
-          </Stack>
-          <RecommendedWidget communities={communities} theme={theme} />
+          {tags?.length > 0 && (
+            <Stack
+              direction='column'
+              spacing={1}
+              sx={{
+                p: 2,
+                border:
+                  theme.palette.mode === 'dark'
+                    ? '1px solid #ffffff1f'
+                    : '1px solid #0000001f',
+              }}
+            >
+              <Typography>Tags</Typography>
+              <Divider />
+              {tags?.map((tag) => (
+                <Link
+                  className={
+                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
+                  }
+                  key={tag.id}
+                  to={`/tags/${tag.name}`}
+                >
+                  <Typography>#{tag.name}</Typography>
+                </Link>
+              ))}
+            </Stack>
+          )}
+          {communities?.length > 0 && (
+            <RecommendedWidget communities={communities} theme={theme} />
+          )}
         </Grid>
       </Grid>
     </Container>

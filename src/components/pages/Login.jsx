@@ -24,7 +24,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const { mutateAsync: login, isSuccess } = useLogIn();
+  const { mutateAsync: login, isPending, isSuccess } = useLogIn();
 
   const onSubmit = async (data) => {
     login(data);
@@ -74,8 +74,8 @@ const LoginPage = () => {
               {errors.password.message}
             </Typography>
           )}
-          <Button type='submit' variant='contained'>
-            Log in
+          <Button type='submit' variant='contained' disabled={isPending}>
+            {isPending ? 'Loading...' : 'Log In'}
           </Button>
           <Stack direction='row' spacing={2}>
             <Typography variant='sub'>Not registered yet?</Typography>

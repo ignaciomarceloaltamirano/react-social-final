@@ -21,12 +21,12 @@ const SearchForm = () => {
         variant='outlined'
         sx={{
           '& .MuiOutlinedInput-root': {
-            borderRadius: '25px',
+            borderRadius: '5px',
             color: '#000000de',
             '& input': {
               height: '5px',
               bgcolor: '#fff',
-              borderRadius: '25px',
+              borderRadius: '5px',
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
               border:

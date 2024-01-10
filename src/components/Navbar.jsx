@@ -48,7 +48,7 @@ const Navbar = ({ user, handleChange }) => {
         <Toolbar sx={{ display: 'flex', justifyContent: 'end' }} disableGutters>
           <Link to='/'>
             <Typography sx={{ mr: 2 }} variant='h5'>
-              Home
+              Zeddit
             </Typography>
           </Link>
           {/* {user && (

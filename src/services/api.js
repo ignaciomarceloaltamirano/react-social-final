@@ -7,8 +7,8 @@ import {
 import toast from 'react-hot-toast';
 
 const instance = axios.create({
-  // baseURL: 'http://localhost:8080',
-  baseURL: 'https://zeddit-tqzk.onrender.com',
+  baseURL: 'http://localhost:8080',
+  // baseURL: 'https://zeddit-tqzk.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },

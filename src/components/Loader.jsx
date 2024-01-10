@@ -7,6 +7,7 @@ const Loader = () => {
       sx={{
         display: 'flex',
         alignItems: 'center',
+        mb: 4,
       }}
     >
       <TailSpin
