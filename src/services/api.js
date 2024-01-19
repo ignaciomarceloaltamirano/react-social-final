@@ -38,7 +38,8 @@ instance.interceptors.response.use(
         originalConfig._retry = true;
         try {
           const res = await axios.post(
-            'http://localhost:8080/auth/refresh-token',
+            // 'http://localhost:8080/auth/refresh-token',
+            'https://zeddit-final.netlify.app/auth/refresh-token',
             {},
             {
               headers: {
