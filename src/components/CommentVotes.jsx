@@ -9,10 +9,10 @@ import {
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import { useState } from 'react';
-import PostCommentForm from './PostCommentForm';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useState } from 'react';
+import PostCommentForm from './PostCommentForm';
 import { getCurrentUser } from '../services/auth.service';
 
 const CommentVotes = ({ comment }) => {
