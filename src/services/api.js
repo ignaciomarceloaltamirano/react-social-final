@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 
 const instance = axios.create({
   // baseURL: 'http://localhost:8080',
-  baseURL: 'https://zeddit-final.netlify.app',
+  baseURL: 'https://zeddit-tqzk.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -39,7 +39,7 @@ instance.interceptors.response.use(
         try {
           const res = await axios.post(
             // 'http://localhost:8080/auth/refresh-token',
-            'https://zeddit-final.netlify.app/auth/refresh-token',
+            'https://zeddit-tqzk.onrender.com/auth/refresh-token',
             {},
             {
               headers: {
