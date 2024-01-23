@@ -3,7 +3,14 @@ import { format, formatDistanceToNow, toDate } from 'date-fns';
 export const formatDateDistance = (date) => {
   if (date) {
     const [year, month, day, hour, minutes, seconds] = date;
-    const timestamp = new Date(year, month - 1, day, hour, minutes, seconds);
+    const timestamp = new Date(
+      year,
+      month - 1,
+      day,
+      hour - 3,
+      minutes,
+      seconds
+    );
 
     return formatDistanceToNow(timestamp, {
       addSuffix: true,
