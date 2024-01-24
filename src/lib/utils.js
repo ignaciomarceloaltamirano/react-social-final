@@ -5,7 +5,9 @@ export const formatDate = (date) => {
 };
 
 export const formatDateDistance = (date) => {
-  const dateObject = fromUnixTime(date);
-  const distanceFromNow = formatDistanceToNow(dateObject);
-  return `${distanceFromNow} ago`;
+  if (date) {
+    const dateObject = fromUnixTime(date);
+    const distanceFromNow = formatDistanceToNow(dateObject);
+    return `${distanceFromNow} ago`;
+  }
 };
