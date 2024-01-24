@@ -64,8 +64,6 @@ const Post = ({ post, withComment }) => {
     deletePost(post?.id);
   };
 
-  console.log(post);
-
   return (
     <Stack sx={{ mb: 2, cursor: 'pointer' }} onClick={handleNavigate}>
       <Paper sx={{ p: 2 }}>
