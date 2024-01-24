@@ -14,8 +14,8 @@ import Post from '../Post';
 const PostPage = () => {
   const params = useParams();
   const theme = useTheme();
-  const { data: post } = useGetPost(params?.postId);
-  const { data, isLoading } = useGetCommunities();
+  const { data: post, isLoading: isLoadingPost } = useGetPost(params?.postId);
+  const { data, isLoading: isLoadingCommunities } = useGetCommunities();
   const recommended = data?.filter(
     (community) => community?.name != post?.communityName
   );
@@ -27,7 +27,7 @@ const PostPage = () => {
 
   return (
     <Container maxWidth='lg'>
-      {isLoading ? (
+      {isLoadingCommunities || isLoadingPost ? (
         <Stack sx={{ mt: 4 }}>
           <Loader />
         </Stack>
