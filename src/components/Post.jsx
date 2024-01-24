@@ -236,7 +236,7 @@ const Post = ({ post, withComment }) => {
                     </Typography>
                   </Link>
                   <Typography variant='body2'>
-                    {formatDate(post?.createdAt)}
+                    {/* {formatDate(post?.createdAt)} */}
                   </Typography>
                 </Stack>
                 <IconButton
