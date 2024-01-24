@@ -1,7 +1,14 @@
 /* eslint-disable react/prop-types */
-import { Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
+import {
+  Divider,
+  IconButton,
+  Link,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { formatDateDistance } from '../lib/utils';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { Grid } from '@mui/material';
 import {
@@ -56,7 +63,7 @@ const Post = ({ post }) => {
 
   return (
     <Stack sx={{ mb: 2, cursor: 'pointer' }} onClick={handleNavigate}>
-      <Paper sx={{ p: 2, borderRadius: '5px' }}>
+      <Paper sx={{ p: 2 }}>
         <Grid container spacing={2}>
           <Grid item xs={1}>
             <Stack
@@ -124,9 +131,11 @@ const Post = ({ post }) => {
                     <Link
                       key={i}
                       to={`/tags/${tag}`}
-                      className={
-                        theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                      }
+                      component={RouterLink}
+                      sx={{
+                        color: theme.palette.text.primary,
+                        textDecoration: 'none',
+                      }}
                       onClick={(e) => {
                         e.stopPropagation();
                       }}
@@ -137,46 +146,81 @@ const Post = ({ post }) => {
                     </Link>
                   ))}
               </Stack>
-              <Divider sx={{ mb: 2 }} />
+              <Divider />
               <Stack
-                direction='row'
-                sx={{
-                  mt: 2,
+                sx={(theme) => ({
                   display: 'flex',
-                  alignItems: 'center',
-                }}
+                  flexDirection: 'row',
+                  alignItems: 'start',
+                  [theme.breakpoints.down('sm')]: {
+                    flexDirection: 'column',
+                  },
+                })}
               >
-                <Link
-                  to={`/communities/${post?.communityName}`}
-                  className={
-                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                  }
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <Typography variant='body2'>
-                    c/{post?.communityName}
-                  </Typography>
-                </Link>
-                <Typography variant='body2' sx={{ mx: 2 }}>
-                  Posted by {''}
+                <Stack direction='row'>
                   <Link
-                    className={
-                      theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                    }
+                    to={`/communities/${post?.communityName}`}
+                    component={RouterLink}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                    sx={(theme) => ({
+                      textDecoration: 'none',
+                      mr: 1,
+                      color: theme.palette.text.primary,
+                      [theme.breakpoints.down('sm')]: {
+                        ml: 1,
+                        mr: 0,
+                        mb: 1,
+                      },
+                    })}
+                  >
+                    <Typography variant='body2'>
+                      c/{post?.communityName}
+                    </Typography>
+                  </Link>
+                </Stack>
+                <Stack direction='row'>
+                  <Typography
+                    variant='body2'
+                    sx={(theme) => ({
+                      [theme.breakpoints.down('sm')]: {
+                        ml: 1,
+                      },
+                    })}
+                  >
+                    Posted by
+                  </Typography>
+                  <Link
+                    component={RouterLink}
                     to={`/users/${post?.authorName}`}
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
+                    sx={{ textDecoration: 'none' }}
                   >
-                    <b>{post?.authorName}</b>
+                    <Typography
+                      sx={{
+                        fontWeight: 600,
+                        color: theme.palette.text.primary,
+                        mx: 1,
+                      }}
+                      variant='body2'
+                    >
+                      {post?.authorName}
+                    </Typography>
                   </Link>
-                </Typography>
-                <Typography variant='body2'>
-                  {formatDateDistance(post?.createdAt)}
-                </Typography>
-                <IconButton sx={{ ml: 'auto' }} onClick={handleSavePost}>
+                  <Typography variant='body2'>
+                    {formatDateDistance(post?.createdAt)}
+                  </Typography>
+                </Stack>
+                <IconButton
+                  sx={(theme) => ({
+                    ml: 'auto',
+                    [theme.breakpoints.down('sm')]: { ml: 0 },
+                  })}
+                  onClick={handleSavePost}
+                >
                   {isPostSaved ? (
                     <InsertDriveFileIcon sx={{ fontSize: '1.3rem' }} />
                   ) : (

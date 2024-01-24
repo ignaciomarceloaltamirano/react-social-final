@@ -1,7 +1,14 @@
 /* eslint-disable react/prop-types */
-import { Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
+import {
+  Divider,
+  IconButton,
+  Link,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { formatDateDistance } from '../lib/utils';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -121,9 +128,11 @@ const PostWithComment = ({ post }) => {
                     <Link
                       key={i}
                       to={`/tags/${tag}`}
-                      className={
-                        theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                      }
+                      component={RouterLink}
+                      sx={{
+                        textDecoration: 'none',
+                        color: theme.palette.text.primary,
+                      }}
                     >
                       <Typography variant='caption' sx={{ mr: 1 }}>
                         #{tag}
@@ -142,31 +151,43 @@ const PostWithComment = ({ post }) => {
               >
                 <Link
                   to={`/communities/${post?.communityName}`}
-                  className={
-                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                  }
+                  component={RouterLink}
                   onClick={(e) => {
                     e.stopPropagation();
+                  }}
+                  sx={{
+                    textDecoration: 'none',
+                    color: theme.palette.text.primary,
                   }}
                 >
                   <Typography variant='body2'>
                     c/{post?.communityName}
                   </Typography>
                 </Link>
-                <Typography variant='body2' sx={{ mx: 2 }}>
-                  Posted by {''}
-                  <Link
-                    className={
-                      theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                    }
-                    to={`/users/${post?.authorName}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <b>{post?.authorName}</b>
-                  </Link>
+                <Typography variant='body2' sx={{ ml: 1 }}>
+                  Posted by
                 </Typography>
+                <Link
+                  component={RouterLink}
+                  sx={{
+                    textDecoration: 'none',
+                    color: theme.palette.text.primary,
+                  }}
+                  to={`/users/${post?.authorName}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      mx: 1,
+                    }}
+                    variant='body2'
+                  >
+                    {post?.authorName}
+                  </Typography>
+                </Link>
                 <Typography variant='body2'>
                   {formatDateDistance(post?.createdAt)}
                 </Typography>

@@ -1,24 +1,24 @@
 /* eslint-disable react/prop-types */
+
 import { Divider, Paper, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const RecommendedWidget = ({ theme, communities }) => {
+const TagsWidget = ({ tags, theme }) => {
   return (
     <Paper>
       <Stack
         direction='column'
         spacing={1}
         sx={{
-          mb: 2,
           p: 2,
         }}
       >
-        <Typography>Recommended communities</Typography>
+        <Typography>Tags</Typography>
         <Divider />
-        {communities?.map((community) => (
-          <Link to={`/communities/${community.name}`} key={community.id}>
+        {tags?.map((tag) => (
+          <Link key={tag.id} to={`/tags/${tag.name}`}>
             <Typography sx={{ color: theme.palette.text.primary }}>
-              c/{community.name}
+              #{tag.name}
             </Typography>
           </Link>
         ))}
@@ -27,4 +27,4 @@ const RecommendedWidget = ({ theme, communities }) => {
   );
 };
 
-export default RecommendedWidget;
+export default TagsWidget;

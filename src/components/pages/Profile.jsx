@@ -4,6 +4,7 @@ import {
   Divider,
   Grid,
   IconButton,
+  Paper,
   Stack,
   Typography,
 } from '@mui/material';
@@ -180,53 +181,47 @@ const ProfilePage = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           {users?.length > 0 && (
-            <Stack
-              spacing={2}
-              sx={{
-                mb: 2,
-                p: 2,
-                borderRadius: '5px',
-                border:
-                  theme.palette.mode === 'dark'
-                    ? '1px solid #ffffff1f'
-                    : '1px solid #0000001f',
-              }}
-            >
-              <Typography>Other users</Typography>
-              <Divider />
-              {users?.map((user) => (
-                <Stack key={user?.id}>
-                  <Link
-                    className={
-                      theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                    }
-                    key={user.id}
-                    to={`/users/${user.username}`}
-                  >
-                    <Stack
-                      direction='row'
-                      spacing={1}
-                      sx={{ display: 'flex', alignItems: 'center', ml: 1 }}
-                    >
-                      <IconButton sx={{ p: 0 }}>
-                        {user?.imageUrl !== null ? (
-                          <Avatar
-                            alt='Avatar'
-                            src={user?.imageUrl}
-                            sx={{ width: '2.5rem', height: '2.5rem' }}
-                          />
-                        ) : (
-                          <AccountCircle sx={{ fontSize: '2.5rem' }} />
-                        )}
-                      </IconButton>
-                      <Typography variant='caption'>
-                        @{user.username}
-                      </Typography>
-                    </Stack>
-                  </Link>
-                </Stack>
-              ))}
-            </Stack>
+            <Paper>
+              <Stack
+                spacing={1}
+                sx={{
+                  mb: 2,
+                  p: 2,
+                }}
+              >
+                <Typography>Other users</Typography>
+                <Divider />
+                {users?.map((user) => (
+                  <Stack key={user?.id}>
+                    <Link key={user.id} to={`/users/${user.username}`}>
+                      <Stack
+                        direction='row'
+                        spacing={1}
+                        sx={{ display: 'flex', alignItems: 'center', ml: 1 }}
+                      >
+                        <IconButton sx={{ p: 0 }}>
+                          {user?.imageUrl !== null ? (
+                            <Avatar
+                              alt='Avatar'
+                              src={user?.imageUrl}
+                              sx={{ width: '2.5rem', height: '2.5rem' }}
+                            />
+                          ) : (
+                            <AccountCircle sx={{ fontSize: '2.5rem' }} />
+                          )}
+                        </IconButton>
+                        <Typography
+                          sx={{ color: theme.palette.text.primary }}
+                          variant='caption'
+                        >
+                          @{user.username}
+                        </Typography>
+                      </Stack>
+                    </Link>
+                  </Stack>
+                ))}
+              </Stack>
+            </Paper>
           )}
         </Grid>
       </Grid>

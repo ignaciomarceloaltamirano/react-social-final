@@ -6,8 +6,9 @@ import {
   Stack,
   TextField,
   Typography,
+  Link,
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useLogIn } from '../../lib/react-query/queries';
 import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -78,8 +79,14 @@ const LoginPage = () => {
             {isPending ? 'Loading...' : 'Log In'}
           </Button>
           <Stack direction='row' spacing={2}>
-            <Typography variant='sub'>Not registered yet?</Typography>
-            <Link to='/register' className='auth-form-link'>
+            <Typography>Not registered yet?</Typography>
+            <Link
+              to='/register'
+              component={RouterLink}
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
               Register
             </Link>
           </Stack>

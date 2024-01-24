@@ -7,7 +7,8 @@ export const formatDateDistance = (date) => {
       year,
       month - 1,
       day,
-      hour - 3,
+      // hour - 3,
+      hour,
       minutes,
       seconds
     );

@@ -36,14 +36,15 @@ const PostPage = () => {
             <PostWithComment post={post} />
           </Grid>
           <Grid item xs={12} md={4}>
-            <AboutCommunityWidget
-              theme={theme}
-              community={community}
-              membersCount={membersCount}
-            />
-            {recommended?.length > 0 && (
-              <RecommendedWidget communities={recommended} theme={theme} />
-            )}
+            <Stack spacing={2}>
+              <AboutCommunityWidget
+                community={community}
+                membersCount={membersCount}
+              />
+              {recommended?.length > 0 && (
+                <RecommendedWidget communities={recommended} theme={theme} />
+              )}
+            </Stack>
           </Grid>
         </Grid>
       )}

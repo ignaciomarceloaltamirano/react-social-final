@@ -5,10 +5,11 @@ import {
   Stack,
   TextField,
   Typography,
+  Link,
 } from '@mui/material';
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import { useRegisterUser } from '../../lib/react-query/queries';
 import { useEffect } from 'react';
@@ -165,8 +166,14 @@ const RegisterUserPage = () => {
             {isPending ? 'Loading...' : 'Register'}
           </Button>
           <Stack direction='row' spacing={2}>
-            <Typography variant='sub'>Already have an account?</Typography>
-            <Link to='/login' className='auth-form-link'>
+            <Typography>Already have an account?</Typography>
+            <Link
+              to='/login'
+              component={RouterLink}
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
               Log In
             </Link>
           </Stack>

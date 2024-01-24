@@ -1,14 +1,15 @@
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
   useGetCommunities,
   useGetTags,
   useSearchPosts,
 } from '../../lib/react-query/queries';
-import { Container, Divider, Stack, Typography, Grid } from '@mui/material';
+import { Container, Stack, Typography, Grid } from '@mui/material';
 import Loader from '../Loader';
 import InfiniteScrollPosts from '../InfiniteScrollPosts';
 import RecommendedWidget from '../RecommendedWidget';
 import { useTheme } from '@emotion/react';
+import TagsWidget from '../TagsWidget';
 
 const SearchPage = () => {
   const theme = useTheme();
@@ -50,36 +51,12 @@ const SearchPage = () => {
           )}
         </Grid>
         <Grid item xs={12} md={4}>
-          {tags?.length > 0 && (
-            <Stack
-              direction='column'
-              spacing={1}
-              sx={{
-                p: 2,
-                border:
-                  theme.palette.mode === 'dark'
-                    ? '1px solid #ffffff1f'
-                    : '1px solid #0000001f',
-              }}
-            >
-              <Typography>Tags</Typography>
-              <Divider />
-              {tags?.map((tag) => (
-                <Link
-                  className={
-                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                  }
-                  key={tag.id}
-                  to={`/tags/${tag.name}`}
-                >
-                  <Typography>#{tag.name}</Typography>
-                </Link>
-              ))}
-            </Stack>
-          )}
-          {communities?.length > 0 && (
-            <RecommendedWidget communities={communities} theme={theme} />
-          )}
+          <Stack spacing={2} sx={{ mb: 2 }}>
+            {tags?.length > 0 && <TagsWidget tags={tags} theme={theme} />}
+            {communities?.length > 0 && (
+              <RecommendedWidget communities={communities} theme={theme} />
+            )}
+          </Stack>
         </Grid>
       </Grid>
     </Container>

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Container, Grid, Typography, Stack, Divider } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Container, Grid, Typography, Stack } from '@mui/material';
+import { useParams } from 'react-router-dom';
 import {
   useGetCommunities,
   useGetPostsByTag,
@@ -11,6 +11,7 @@ import Loader from '../Loader';
 import RecommendedWidget from '../RecommendedWidget';
 import { useTheme } from '@emotion/react';
 import { useEffect } from 'react';
+import TagsWidget from '../TagsWidget';
 
 const TagPostsPage = () => {
   const params = useParams();
@@ -50,34 +51,11 @@ const TagPostsPage = () => {
             </Stack>
           )}
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Stack
-            direction='column'
-            spacing={2}
-            sx={{
-              p: 2,
-              bgcolor: theme.palette.mode === 'light' && '#fff',
-              border:
-                theme.palette.mode === 'dark'
-                  ? '1px solid #ffffff1f'
-                  : '1px solid #0000001f',
-            }}
-          >
-            <Typography>Tags</Typography>
-            <Divider />
-            {tags?.map((tag) => (
-              <Link
-                className={
-                  theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                }
-                key={tag.id}
-                to={`/tags/${tag.name}`}
-              >
-                <Typography>#{tag.name}</Typography>
-              </Link>
-            ))}
+        <Grid item xs={12} md={4} sx={{ mb: 2 }}>
+          <Stack spacing={2}>
+            <TagsWidget tags={tags} theme={theme} />
+            <RecommendedWidget communities={communities} theme={theme} />
           </Stack>
-          <RecommendedWidget communities={communities} theme={theme} />
         </Grid>
       </Grid>
     </Container>

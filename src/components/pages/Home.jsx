@@ -1,4 +1,11 @@
-import { Container, Divider, Grid, Stack, Typography } from '@mui/material';
+import {
+  Container,
+  Divider,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material';
 import CommunityModal from '../CommunityModal';
 import HomeIcon from '@mui/icons-material/Home';
 import { useTheme } from '@emotion/react';
@@ -10,7 +17,7 @@ import {
 import InfiniteScrollPosts from '../InfiniteScrollPosts';
 import Loader from '../Loader';
 import RecommendedWidget from '../RecommendedWidget';
-import { Link } from 'react-router-dom';
+import TagsWidget from '../TagsWidget';
 
 const HomePage = () => {
   const theme = useTheme();
@@ -44,69 +51,34 @@ const HomePage = () => {
           )}
         </Grid>
         <Grid item xs={12} md={4}>
-          <Stack
-            direction='column'
-            spacing={1}
-            sx={{
-              bgcolor: theme.palette.mode === 'light' && '#fff',
-              borderRadius: '5px',
-              border:
-                theme.palette.mode === 'dark'
-                  ? '1px solid #ffffff1f'
-                  : '1px solid #0000001f',
-              p: 2,
-            }}
-          >
-            <Stack
-              direction='row'
-              spacing={1}
-              sx={{ display: 'flex', alignItems: 'center' }}
-            >
-              <HomeIcon />
-              <Typography variant='subtitle1' sx={{ lineHeight: 0 }}>
-                Home
-              </Typography>
-            </Stack>
-            <Typography variant='body2'>
-              Your personal homepage. Come here to check in with your favorite
-              communities.
-            </Typography>
-            <Divider />
-            <CommunityModal feed />
-          </Stack>
-          {tags?.length > 0 && (
-            <Stack
-              direction='column'
-              spacing={1}
-              sx={{
-                mt: 2,
-                p: 2,
-                bgcolor: theme.palette.mode === 'light' && '#fff',
-                borderRadius: '5px',
-                border:
-                  theme.palette.mode === 'dark'
-                    ? '1px solid #ffffff1f'
-                    : '1px solid #0000001f',
-              }}
-            >
-              <Typography>Tags</Typography>
-              <Divider />
-              {tags?.map((tag) => (
-                <Link
-                  className={
-                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                  }
-                  key={tag.id}
-                  to={`/tags/${tag.name}`}
+          <Stack spacing={2} sx={{ mb: 2 }}>
+            <Paper>
+              <Stack sx={{ p: 2 }} spacing={1}>
+                <Stack
+                  direction='row'
+                  spacing={1}
+                  sx={{ display: 'flex', alignItems: 'center' }}
                 >
-                  <Typography>#{tag.name}</Typography>
-                </Link>
-              ))}
-            </Stack>
-          )}
-          {communities?.length > 0 && (
-            <RecommendedWidget communities={communities} theme={theme} />
-          )}
+                  <HomeIcon />
+                  <Typography variant='subtitle1' sx={{ lineHeight: 0 }}>
+                    Home
+                  </Typography>
+                </Stack>
+                <Typography variant='body2'>
+                  Your personal homepage. Come here to check in with your
+                  favorite communities.
+                </Typography>
+                <Divider />
+                <CommunityModal feed />
+              </Stack>
+            </Paper>
+            <Paper>
+              {tags?.length > 0 && <TagsWidget tags={tags} theme={theme} />}
+            </Paper>
+            {communities?.length > 0 && (
+              <RecommendedWidget communities={communities} theme={theme} />
+            )}
+          </Stack>
         </Grid>
       </Grid>
     </Container>

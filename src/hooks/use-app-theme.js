@@ -21,26 +21,28 @@ export const useAppTheme = () => {
     palette: {
       mode: mode ? 'dark' : 'light',
       primary: {
-        main: '#ABC4FF',
+        main: '#646cff',
       },
       secondary: {
-        main: '#C1D3FE',
+        main: '#8c8df5',
       },
       ...(mode
         ? {
             background: {
-              default: '#1d1d20',
-              paper: '#2c2c30',
+              default: '#1b1b1f',
+              paper: '#202127',
             },
             text: {
               primary: '#ffffff',
-              secondary: '#ffffffb3',
-              disabled: '#ffffff80',
             },
           }
         : {
             background: {
-              default: '#EDF2FB',
+              default: '#fff',
+              paper: '#f6f6f7',
+            },
+            text: {
+              primary: '#3c3c43',
             },
           }),
     },
@@ -61,7 +63,7 @@ export const useAppTheme = () => {
       MuiIconButton: {
         styleOverrides: {
           root: {
-            color: !mode && '#000000de',
+            color: mode ? '#fff' : '#1b1b1f',
           },
         },
       },
@@ -105,7 +107,8 @@ export const useAppTheme = () => {
         styleOverrides: {
           root: {
             boxShadow: 'none',
-            border: !mode && '1px solid #0000001f',
+            border: 0,
+            borderRadius: '8px',
           },
         },
       },

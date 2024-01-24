@@ -6,6 +6,7 @@ import {
   Container,
   Divider,
   IconButton,
+  Link,
   Menu,
   MenuItem,
   Stack,
@@ -15,7 +16,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { AccountCircle } from '@mui/icons-material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Brightness3Icon from '@mui/icons-material/Brightness3';
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import { removeUser } from '../services/token.service';
@@ -43,14 +44,14 @@ const Navbar = ({ user, handleChange }) => {
   };
 
   return (
-    <AppBar key={theme} position='sticky' sx={{ mb: 2 }}>
+    <AppBar key={theme} position='sticky' sx={{ mb: 2, borderRadius: '0' }}>
       <Container maxWidth='xl'>
         <Toolbar sx={{ display: 'flex', justifyContent: 'end' }} disableGutters>
-          <Link to='/'>
+          <RouterLink to='/'>
             <Typography sx={{ mr: 2 }} variant='h5'>
               Zeddit
             </Typography>
-          </Link>
+          </RouterLink>
           {/* {user && (
             <>
               {' '}
@@ -172,17 +173,21 @@ const Navbar = ({ user, handleChange }) => {
                 </Typography>
                 <Divider />
                 <Link
-                  className={
-                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                  }
+                  component={RouterLink}
+                  sx={{
+                    textDecoration: 'none',
+                    color: theme.palette.text.primary,
+                  }}
                   to='/'
                 >
                   <MenuItem onClick={handleCloseUserMenu}>Feed</MenuItem>
                 </Link>
                 <Link
-                  className={
-                    theme.palette.mode === 'light' ? 'light-mode-link' : ''
-                  }
+                  component={RouterLink}
+                  sx={{
+                    textDecoration: 'none',
+                    color: theme.palette.text.primary,
+                  }}
                   to={`/users/${user?.username}`}
                 >
                   <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
@@ -203,18 +208,18 @@ const Navbar = ({ user, handleChange }) => {
           ) : (
             <Stack direction='row' spacing={2} sx={{ ml: 1 }}>
               <Button
-                component={Link}
+                component={RouterLink}
                 to='/login'
                 variant='contained'
-                color={theme.palette.mode === 'dark' ? 'primary' : 'secondary'}
+                sx={{ backgroundColor: theme.palette.secondary.main }}
               >
                 Log In
               </Button>
               <Button
-                component={Link}
+                component={RouterLink}
                 to='/register'
                 variant='contained'
-                color={theme.palette.mode === 'dark' ? 'primary' : 'secondary'}
+                sx={{ backgroundColor: theme.palette.secondary.main }}
               >
                 Register
               </Button>
