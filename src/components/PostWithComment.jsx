@@ -7,7 +7,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { formatDateDistance } from '../lib/utils';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -29,6 +28,7 @@ import Comments from './Comments';
 import UpdatePostModal from './UpdatePostModal';
 import { getCurrentUser } from '../services/auth.service';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { formatDate } from '../lib/utils';
 
 const PostWithComment = ({ post }) => {
   const theme = useTheme();
@@ -59,7 +59,7 @@ const PostWithComment = ({ post }) => {
 
   return (
     <Stack sx={{ mb: 2 }}>
-      <Paper sx={{ p: 2, borderRadius: '5px' }}>
+      <Paper sx={{ p: 2 }}>
         <Grid container spacing={2}>
           <Grid item xs={1}>
             <Stack
@@ -69,6 +69,7 @@ const PostWithComment = ({ post }) => {
                 alignItems: 'center',
                 height: '100%',
               }}
+              spacing={1}
             >
               <IconButton
                 onClick={(e) => {
@@ -100,7 +101,11 @@ const PostWithComment = ({ post }) => {
               <Stack
                 direction='row'
                 spacing={1}
-                sx={{ display: 'flex', justifyContent: 'space-between' }}
+                sx={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}
               >
                 <Stack
                   spacing={1}
@@ -140,58 +145,82 @@ const PostWithComment = ({ post }) => {
                     </Link>
                   ))}
               </Stack>
-              <Divider sx={{ mb: 2 }} />
+              <Divider />
               <Stack
-                direction='row'
-                sx={{
-                  mt: 2,
+                sx={(theme) => ({
                   display: 'flex',
+                  flexDirection: 'row',
                   alignItems: 'center',
-                }}
+                  [theme.breakpoints.down('sm')]: {
+                    alignItems: 'start',
+                    flexDirection: 'column',
+                  },
+                })}
               >
-                <Link
-                  to={`/communities/${post?.communityName}`}
-                  component={RouterLink}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  sx={{
-                    textDecoration: 'none',
-                    color: theme.palette.text.primary,
-                  }}
-                >
-                  <Typography variant='body2'>
-                    c/{post?.communityName}
-                  </Typography>
-                </Link>
-                <Typography variant='body2' sx={{ ml: 1 }}>
-                  Posted by
-                </Typography>
-                <Link
-                  component={RouterLink}
-                  sx={{
-                    textDecoration: 'none',
-                    color: theme.palette.text.primary,
-                  }}
-                  to={`/users/${post?.authorName}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontWeight: 600,
-                      mx: 1,
+                <Stack direction='row'>
+                  <Link
+                    to={`/communities/${post?.communityName}`}
+                    component={RouterLink}
+                    onClick={(e) => {
+                      e.stopPropagation();
                     }}
-                    variant='body2'
+                    sx={(theme) => ({
+                      textDecoration: 'none',
+                      mr: 1,
+                      color: theme.palette.text.primary,
+                      [theme.breakpoints.down('sm')]: {
+                        ml: 1,
+                        mr: 0,
+                        mb: 1,
+                      },
+                    })}
                   >
-                    {post?.authorName}
+                    <Typography variant='body2'>
+                      c/{post?.communityName}
+                    </Typography>
+                  </Link>
+                </Stack>
+                <Stack direction='row'>
+                  <Typography
+                    variant='body2'
+                    sx={(theme) => ({
+                      [theme.breakpoints.down('sm')]: {
+                        ml: 1,
+                      },
+                    })}
+                  >
+                    Posted by
                   </Typography>
-                </Link>
-                <Typography variant='body2'>
-                  {formatDateDistance(post?.createdAt)}
-                </Typography>
-                <IconButton sx={{ ml: 'auto' }} onClick={handleSavePost}>
+                  <Link
+                    component={RouterLink}
+                    to={`/users/${post?.authorName}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                    sx={{ textDecoration: 'none' }}
+                  >
+                    <Typography
+                      sx={{
+                        fontWeight: 600,
+                        color: theme.palette.text.primary,
+                        mx: 1,
+                      }}
+                      variant='body2'
+                    >
+                      {post?.authorName}
+                    </Typography>
+                  </Link>
+                  <Typography variant='body2'>
+                    {formatDate(post?.createdAt)}
+                  </Typography>
+                </Stack>
+                <IconButton
+                  sx={(theme) => ({
+                    ml: 'auto',
+                    [theme.breakpoints.down('sm')]: { ml: 0 },
+                  })}
+                  onClick={handleSavePost}
+                >
                   {isPostSaved ? (
                     <InsertDriveFileIcon sx={{ fontSize: '1.3rem' }} />
                   ) : (

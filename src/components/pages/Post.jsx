@@ -9,7 +9,7 @@ import RecommendedWidget from '../RecommendedWidget';
 import { useTheme } from '@emotion/react';
 import AboutCommunityWidget from '../AboutCommunityWidget';
 import Loader from '../Loader';
-import PostWithComment from '../PostWithComment';
+import Post from '../Post';
 
 const PostPage = () => {
   const params = useParams();
@@ -24,6 +24,7 @@ const PostPage = () => {
     (community) => community?.name === post?.communityName
   );
   const { data: membersCount } = useGetCommunityMembersCount(community?.id);
+
   return (
     <Container maxWidth='lg'>
       {isLoading ? (
@@ -33,7 +34,7 @@ const PostPage = () => {
       ) : (
         <Grid container columnSpacing={2}>
           <Grid item xs={12} md={8}>
-            <PostWithComment post={post} />
+            <Post post={post} withComment />
           </Grid>
           <Grid item xs={12} md={4}>
             <Stack spacing={2}>

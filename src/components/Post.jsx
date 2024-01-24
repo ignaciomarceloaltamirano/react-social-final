@@ -7,7 +7,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { formatDateDistance } from '../lib/utils';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { Grid } from '@mui/material';
@@ -26,8 +25,12 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { getCurrentUser } from '../services/auth.service';
+import { formatDate } from '../lib/utils';
+import UpdatePostModal from './UpdatePostModal';
+import Comments from './Comments';
+import PostCommentForm from './PostCommentForm';
 
-const Post = ({ post }) => {
+const Post = ({ post, withComment }) => {
   const theme = useTheme();
   const user = getCurrentUser();
   const { data: currentVote } = useGetCurrentVote(post?.id);
@@ -61,6 +64,8 @@ const Post = ({ post }) => {
     deletePost(post?.id);
   };
 
+  console.log(post);
+
   return (
     <Stack sx={{ mb: 2, cursor: 'pointer' }} onClick={handleNavigate}>
       <Paper sx={{ p: 2 }}>
@@ -70,7 +75,7 @@ const Post = ({ post }) => {
               direction='column'
               sx={{
                 display: 'flex',
-                justifyContent: 'center',
+                justifyContent: withComment ? '' : 'center',
                 alignItems: 'center',
                 height: '100%',
               }}
@@ -111,9 +116,24 @@ const Post = ({ post }) => {
                   justifyContent: 'space-between',
                 }}
               >
-                <Typography variant='h5'> {post?.title}</Typography>
+                {withComment ? (
+                  <Stack
+                    spacing={1}
+                    sx={{ display: 'flex', justifyContent: 'center' }}
+                  >
+                    <Typography variant='h5'> {post?.title}</Typography>
+                    <Typography variant='body2'>{post?.content}</Typography>
+                  </Stack>
+                ) : (
+                  <Typography variant='h5'> {post?.title}</Typography>
+                )}
                 {user?.id === post?.authorId && (
-                  <Stack direction='row' spacing={1}>
+                  <Stack
+                    direction='row'
+                    spacing={1}
+                    sx={{ alignItems: withComment ? '' : 'center' }}
+                  >
+                    {withComment && <UpdatePostModal />}
                     <IconButton
                       onClick={handleDeletePost}
                       sx={{ borderRadius: '5px' }}
@@ -123,8 +143,14 @@ const Post = ({ post }) => {
                   </Stack>
                 )}
               </Stack>
-              <Typography variant='body2'>{post?.content}</Typography>
-              {post?.imageUrl && <img src={post.imageUrl} />}
+              {withComment ? (
+                post?.imageUrl && <img src={post.imageUrl} />
+              ) : (
+                <>
+                  <Typography variant='body2'>{post?.content}</Typography>
+                  {post?.imageUrl && <img src={post.imageUrl} />}
+                </>
+              )}
               <Stack direction='row' spacing={1}>
                 {post?.tags.length > 0 &&
                   post.tags.map((tag, i) => (
@@ -151,8 +177,9 @@ const Post = ({ post }) => {
                 sx={(theme) => ({
                   display: 'flex',
                   flexDirection: 'row',
-                  alignItems: 'start',
+                  alignItems: 'center',
                   [theme.breakpoints.down('sm')]: {
+                    alignItems: 'start',
                     flexDirection: 'column',
                   },
                 })}
@@ -211,7 +238,7 @@ const Post = ({ post }) => {
                     </Typography>
                   </Link>
                   <Typography variant='body2'>
-                    {formatDateDistance(post?.createdAt)}
+                    {formatDate(post?.createdAt)}
                   </Typography>
                 </Stack>
                 <IconButton
@@ -228,7 +255,10 @@ const Post = ({ post }) => {
                   )}
                 </IconButton>
               </Stack>
+              <Divider />
+              {withComment && <PostCommentForm postId={post?.id} />}
             </Stack>
+            {withComment && <Comments post={post} />}
           </Grid>
         </Grid>
       </Paper>

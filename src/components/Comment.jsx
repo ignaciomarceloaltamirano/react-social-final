@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Avatar, IconButton, Stack, Typography } from '@mui/material';
-import { formatDateDistance } from '../lib/utils';
 import { AccountCircle } from '@mui/icons-material';
 import CommentVotes from './CommentVotes';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
+import { formatDateDistance } from '../lib/utils';
 
 const Comment = ({ comment, replies, getReplies }) => {
   const theme = useTheme();
+
   return (
     <Stack
       direction='column'

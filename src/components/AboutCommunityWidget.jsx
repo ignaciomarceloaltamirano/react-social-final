@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { Paper, Stack, Typography } from '@mui/material';
-import { formatDate } from '../lib/utils';
 
 const AboutCommunityWidget = ({ community, membersCount }) => {
   return (
@@ -12,7 +11,8 @@ const AboutCommunityWidget = ({ community, membersCount }) => {
       >
         <Typography variant='h5'>About c/{community?.name}</Typography>
         <Typography variant='subtitle2'>
-          Created {formatDate(community?.createdAt)}
+          {/* Created {formatDate(community?.createdAt)} */}
+          Created {community?.createdAt}
         </Typography>
         <Typography variant='subtitle2'>Members: {membersCount}</Typography>
       </Stack>

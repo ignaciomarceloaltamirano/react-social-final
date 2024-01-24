@@ -1,29 +1,11 @@
-import { format, formatDistanceToNow, toDate } from 'date-fns';
+import { format, formatDistanceToNow, fromUnixTime } from 'date-fns';
 
-export const formatDateDistance = (date) => {
-  if (date) {
-    const [year, month, day, hour, minutes, seconds] = date;
-    const timestamp = new Date(
-      year,
-      month - 1,
-      day,
-      // hour - 3,
-      hour,
-      minutes,
-      seconds
-    );
-
-    return formatDistanceToNow(timestamp, {
-      addSuffix: true,
-    });
-  }
+export const formatDate = (date) => {
+  return format(fromUnixTime(date), 'dd/MM/yyyy hh:mm a');
 };
 
-export const formatDate = (dateArray) => {
-  if (dateArray) {
-    const [year, month, day, hour, minute, second] = dateArray;
-    const date = toDate(new Date(year, month - 1, day, hour, minute, second));
-
-    return format(date, 'MMMM, dd, yyyy');
-  }
+export const formatDateDistance = (date) => {
+  const dateObject = fromUnixTime(date);
+  const distanceFromNow = formatDistanceToNow(dateObject);
+  return `${distanceFromNow} ago`;
 };
