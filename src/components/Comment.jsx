@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import { Avatar, IconButton, Stack, Typography } from '@mui/material';
+import { Avatar, IconButton, Link, Stack, Typography } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
 import CommentVotes from './CommentVotes';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
 import { formatDateDistance } from '../lib/utils';
 
@@ -24,7 +24,17 @@ const Comment = ({ comment, replies, getReplies }) => {
         sx={{ display: 'flex', alignItems: 'center' }}
         spacing={1}
       >
-        <Link to={`/users/${comment?.authorName}`}>
+        <Link
+          to={`/users/${comment?.authorName}`}
+          sx={{
+            textDecoration: 'none',
+            color: theme.palette.text.primary,
+          }}
+          component={RouterLink}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <IconButton sx={{ p: 0 }} size='medium'>
             {comment.authorImageUrl !== null ? (
               <Avatar
@@ -38,8 +48,15 @@ const Comment = ({ comment, replies, getReplies }) => {
           </IconButton>
         </Link>
         <Link
-          className={theme.palette.mode === 'light' ? 'light-mode-link' : ''}
           to={`/users/${comment?.authorName}`}
+          sx={{
+            textDecoration: 'none',
+            color: theme.palette.text.primary,
+          }}
+          component={RouterLink}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
         >
           <b>{comment.authorName}</b>
         </Link>

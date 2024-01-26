@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import CommunityModal from '../CommunityModal';
+import CreateOrUpdateCommunityModal from '../CreateOrUpdateCommunityModal';
 import HomeIcon from '@mui/icons-material/Home';
 import { useTheme } from '@emotion/react';
 import {
@@ -69,7 +69,7 @@ const HomePage = () => {
                   favorite communities.
                 </Typography>
                 <Divider />
-                <CommunityModal feed />
+                <CreateOrUpdateCommunityModal feed />
               </Stack>
             </Paper>
             <Paper>

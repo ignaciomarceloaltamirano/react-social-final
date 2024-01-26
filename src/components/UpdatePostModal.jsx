@@ -27,7 +27,7 @@ const UpdatePostModal = () => {
   const postId = params?.postId;
   const { data: post } = useGetPost(postId);
   const { register, handleSubmit, control, reset } = useForm();
-  const { mutateAsync: updatePost, status, isPending } = useUpdatePost();
+  const { mutateAsync: updatePost, isPending, isSuccess } = useUpdatePost();
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -55,10 +55,10 @@ const UpdatePostModal = () => {
       postId,
     });
 
-    if (status === 'success') {
+    if (isSuccess) {
       reset();
-      handleClose();
     }
+    handleClose();
   };
 
   return (
@@ -195,6 +195,7 @@ const UpdatePostModal = () => {
               sx={{ alignSelf: 'start', mt: 2 }}
               type='submit'
               variant='contained'
+              disabled={isPending}
             >
               {isPending ? 'Updating...' : 'Update'}
             </Button>

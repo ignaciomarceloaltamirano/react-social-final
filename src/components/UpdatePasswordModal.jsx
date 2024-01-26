@@ -32,7 +32,7 @@ const UpdatePasswordModal = () => {
   const { mutateAsync: updatePassword, isPending } = useUpdatePassword();
 
   const onSubmit = async (data) => {
-    updatePassword(data);
+    await updatePassword(data);
     handleClose();
     reset();
   };

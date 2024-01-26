@@ -71,7 +71,7 @@ const ProfilePage = () => {
     userPosts?.pages.map((group) => group?.content).flatMap((p) => p.length) *
     userPosts?.pages.map((group) => group.totalPages);
 
-  const users = data?.filter((u) => u.id != currentUser?.id);
+  const users = data?.filter((u) => u.username !== params?.username);
 
   const handleChange = (e, newValue) => {
     setValue(newValue);

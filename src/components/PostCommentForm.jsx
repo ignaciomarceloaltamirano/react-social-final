@@ -22,8 +22,10 @@ const PostCommentForm = ({
     setValue,
     formState: { errors },
   } = useForm({ resolver: zodResolver(commentSchema) });
-  const { mutate: createComment } = useCreateComment();
-  const { mutateAsync: updateComment } = useUpdateComment();
+  const { mutateAsync: createComment, isPending: isPendingCreate } =
+    useCreateComment();
+  const { mutateAsync: updateComment, isPending: isPendingUpdate } =
+    useUpdateComment();
   const theme = useTheme();
 
   useEffect(() => {
@@ -34,13 +36,13 @@ const PostCommentForm = ({
     }
   }, [updating, comment, setValue]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (updating) {
-      updateComment({ commentId: comment?.id, text: data.text });
+      await updateComment({ commentId: comment?.id, text: data.text });
       setIsReplying(false);
       setIsUpdating(false);
     } else {
-      createComment({ postId, text: data.text, replyToId });
+      await createComment({ postId, text: data.text, replyToId });
       if (replyToId) setIsReplying(false);
     }
     reset();
@@ -76,8 +78,17 @@ const PostCommentForm = ({
               {errors.text.message}
             </Typography>
           )}
-          <Button sx={{ alignSelf: 'end' }} type='submit' variant='contained'>
-            Submit
+          <Button
+            sx={{ alignSelf: 'end' }}
+            type='submit'
+            variant='contained'
+            disabled={isPendingCreate || isPendingUpdate}
+          >
+            {isPendingCreate || isPendingUpdate
+              ? 'Loading...'
+              : updating
+              ? 'Update'
+              : 'Submit'}
           </Button>
         </Stack>
       </form>

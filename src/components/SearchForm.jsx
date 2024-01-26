@@ -1,10 +1,8 @@
 import { Button, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { useTheme } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 
 const SearchForm = () => {
-  const theme = useTheme();
   const navigate = useNavigate();
   const { handleSubmit, register, reset } = useForm();
 
@@ -19,23 +17,23 @@ const SearchForm = () => {
         {...register('query')}
         placeholder='Search posts...'
         variant='outlined'
-        sx={{
+        sx={(theme) => ({
           '& .MuiOutlinedInput-root': {
+            color: '#3c3c43',
             borderRadius: '5px',
-            color: '#000000de',
             '& input': {
               height: '5px',
               bgcolor: '#fff',
-              borderRadius: '5px',
+              borderRadius: '8px',
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
               border:
                 theme.palette.mode === 'dark'
                   ? '1px solid primary'
-                  : '1px solid #000000de',
+                  : '1px solid #3c3c43',
             },
           },
-        }}
+        })}
       />
       <Button sx={{ display: 'none' }} variant='contained' type='submit'>
         Submit

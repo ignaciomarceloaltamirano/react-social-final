@@ -82,7 +82,7 @@ export const postSchema = z.object({
   content: z
     .string()
     .min(3, 'Content must be at least 3 characters long.')
-    .max(255, 'Content must be at most 255 characters long.'),
+    .max(256, 'Content must be at most 256 characters long.'),
   tags: tagsSchema.optional().or(z.literal('')),
   image: z
     .custom((value) => value instanceof File, {
@@ -95,5 +95,5 @@ export const commentSchema = z.object({
   text: z
     .string()
     .min(3, 'Text must be at least 3 characters long.')
-    .max(255, 'Text must be at most 255 characters long.'),
+    .max(256, 'Text must be at most 256 characters long.'),
 });

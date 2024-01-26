@@ -30,7 +30,7 @@ const UpdateUserModal = ({ profileUser }) => {
     control,
     formState: { errors },
   } = useForm({ resolver: zodResolver(updateUserSchema) });
-  const { mutateAsync: updateUser, isPending } = useUpdateUser();
+  const { mutateAsync: updateUser, isPending, isSuccess } = useUpdateUser();
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -48,15 +48,18 @@ const UpdateUserModal = ({ profileUser }) => {
       formData.append('image', data?.image);
     }
 
-    updateUser(formData);
-    handleClose();
+    await updateUser(formData);
+
+    if (isSuccess) {
+      handleClose();
+    }
   };
 
   return (
     <Stack sx={{ ml: 'auto' }}>
       {user?.id === profileUser?.id && (
-        <Button variant='contained' onClick={handleOpen} disabled={isPending}>
-          {isPending ? 'Updating...' : 'Update Info'}
+        <Button variant='contained' onClick={handleOpen}>
+          Update Info
         </Button>
       )}
       <Modal

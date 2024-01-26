@@ -24,7 +24,7 @@ import InfiniteScrollPosts from '../InfiniteScrollPosts';
 import Loader from '../Loader';
 import { useTheme } from '@emotion/react';
 import AboutCommunityWidget from '../AboutCommunityWidget';
-import CommunityModal from '../CommunityModal';
+import CreateOrUpdateCommunityModal from '../CreateOrUpdateCommunityModal';
 
 const CommunityPage = () => {
   const params = useParams();
@@ -83,7 +83,7 @@ const CommunityPage = () => {
                 {isSubscribed ? 'Leave' : 'Join'}
               </Button>
               {user?.id === community?.creatorId && (
-                <CommunityModal community={community} />
+                <CreateOrUpdateCommunityModal community={community} />
               )}
             </Stack>
             <Stack direction='row' spacing={1} sx={{ my: 2 }}>

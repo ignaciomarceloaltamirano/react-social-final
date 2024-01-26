@@ -20,7 +20,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Brightness3Icon from '@mui/icons-material/Brightness3';
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import { removeUser } from '../services/token.service';
-import CommunityModal from './CommunityModal';
+import CreateOrUpdateCommunityModal from './CreateOrUpdateCommunityModal';
 import { useTheme } from '@emotion/react';
 import SearchForm from './SearchForm';
 import UpdatePasswordModal from './UpdatePasswordModal';
@@ -119,7 +119,15 @@ const Navbar = ({ user, handleChange }) => {
             </>
           )} */}
           {user && (
-            <Stack sx={{ mx: 'auto', width: 250 }}>
+            <Stack
+              sx={(theme) => ({
+                ml: 'auto',
+                width: 250,
+                [theme.breakpoints.down('sm')]: {
+                  width: '150px',
+                },
+              })}
+            >
               <SearchForm />
             </Stack>
           )}
@@ -193,7 +201,7 @@ const Navbar = ({ user, handleChange }) => {
                   <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
                 </Link>
 
-                <CommunityModal />
+                <CreateOrUpdateCommunityModal />
                 <UpdatePasswordModal />
                 <MenuItem
                   onClick={() => {

@@ -25,7 +25,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { communitySchema } from '../lib/zod/validations';
 import { useTheme } from '@emotion/react';
 
-const CommunityModal = ({ feed, community }) => {
+const CreateOrUpdateCommunityModal = ({ feed, community }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -38,8 +38,16 @@ const CommunityModal = ({ feed, community }) => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(communitySchema) });
 
-  const { mutateAsync: createCommunity } = useCreateCommunity();
-  const { mutateAsync: updateCommunity } = useUpdateCommunity();
+  const {
+    mutateAsync: createCommunity,
+    isSuccess: isSuccessCreate,
+    isPending: isPendingCreate,
+  } = useCreateCommunity();
+  const {
+    mutateAsync: updateCommunity,
+    isSuccess: isSuccessUpdate,
+    isPending: isPendingUpdate,
+  } = useUpdateCommunity();
   const { mutateAsync: deleteCommunity } = useDeleteCommunity();
 
   const onSubmit = async (data) => {
@@ -49,8 +57,11 @@ const CommunityModal = ({ feed, community }) => {
     } else {
       createCommunity(data);
     }
+
+    if (isSuccessCreate || isSuccessUpdate) {
+      reset();
+    }
     handleClose();
-    reset();
   };
 
   const handleDeleteCommunity = async () => {
@@ -122,7 +133,7 @@ const CommunityModal = ({ feed, community }) => {
               <CloseOutlinedIcon />
             </IconButton>
             <Typography sx={{ mb: 1 }} variant='h6' component='h2'>
-              {community ? 'Edit' : 'Create'} community
+              {community ? 'Update' : 'Create'} community
             </Typography>
             <Divider />
             <FormLabel sx={{ my: 2 }}>Name</FormLabel>
@@ -149,8 +160,13 @@ const CommunityModal = ({ feed, community }) => {
               sx={{ alignSelf: 'start', mt: 2 }}
               type='submit'
               variant='contained'
+              disabled={isPendingCreate || isPendingUpdate}
             >
-              {community ? 'Edit' : 'Create'}
+              {isPendingCreate || isPendingUpdate
+                ? 'Loading...'
+                : community
+                ? 'Update'
+                : 'Create'}
             </Button>
           </Stack>
         </form>
@@ -159,4 +175,4 @@ const CommunityModal = ({ feed, community }) => {
   );
 };
 
-export default CommunityModal;
+export default CreateOrUpdateCommunityModal;

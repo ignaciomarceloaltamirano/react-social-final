@@ -35,7 +35,7 @@ const CreatePostModal = () => {
     formState: { errors },
   } = useForm({ resolver: zodResolver(postSchema) });
   const { data: community } = useGetCommunity(params?.communityName);
-  const { mutateAsync: createPost, isPending } = useCreatePost();
+  const { mutateAsync: createPost, isPending, isSuccess } = useCreatePost();
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -63,7 +63,9 @@ const CreatePostModal = () => {
       communityId: community?.id,
     });
 
-    reset();
+    if (isSuccess) {
+      reset();
+    }
     handleClose();
   };
 
